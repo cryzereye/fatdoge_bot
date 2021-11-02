@@ -2,16 +2,22 @@
 from flask import Flask
 import discord
 from discord.ext import commands
-import json
+from pycoingecko import CoinGeckoAPI
 
+#local
+import commands_content as cc
+
+#packages
 app = Flask(__name__)
+cg = CoinGeckoAPI()
 
 #permissions
 intents = discord.Intents.default()
 intents.typing = True
 
 #general bot setup
-bot = commands.Bot(command_prefix='!')
+command_prefix='!'
+bot = commands.Bot(command_prefix)
 client = discord.Client(intents = intents)
 
 # server status
@@ -31,12 +37,16 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.startswith('!hello'):
+    if message.content.startswith(command_prefix +'hello'):
         print(f'{message.author}')
         await message.channel.send('Hello!')
-    
-    if message.content.startswith('bepis'):
+
+    if message.content.startswith(command_prefix +'bepis'):
         await message.channel.send('https://cdn.discordapp.com/emojis/804500782988525609.png?size=64')
+
+    if message.content.startswith(command_prefix + 'crypto'):
+        await message.channel.send(cc.crypto(cg , message.content))
+    
 
 TOKEN = open("module/token.txt","r")
 client.run(TOKEN.readline()) 
