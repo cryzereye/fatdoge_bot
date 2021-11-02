@@ -12,6 +12,7 @@ def getCoinID(arg):
 # CoinGeckoAPI can only show rates against USD
 # had to make a workaround for token-token rates
 def crypto(cg, args, user):
+    util.logger(str(user) + " queried " + args)
     try:
         list = args.split(" ")
         if len(list) == 1:
@@ -24,7 +25,6 @@ def crypto(cg, args, user):
                 coin2 = list[2]
                 coin2_ID = getCoinID(coin2.lower())[0]["Id"]
                 result2 = cg.get_price(ids=coin2_ID, vs_currencies='usd')
-                print(result2)
                 return "```" + coin1.upper() + "/" + coin2.upper() + " : " + str(result[coin1_ID]['usd']/result2[coin2_ID]['usd']) + "```"
 
             return "```" + coin1.upper() + "/USD : " + str(result[coin1_ID]['usd']) + "```"

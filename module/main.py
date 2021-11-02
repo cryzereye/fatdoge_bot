@@ -31,15 +31,15 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.startswith('bepis'):
+    if message.content.startswith('bepis') and message.channel.id in (806838914806710282, 746603176421097514): #RMI-KB degeneral, test server
         msg = cc.bepisMonke(message.author)
         if (msg != ""): await message.channel.send(msg)
 
-    if message.content.startswith('seggs'):
+    if message.content.startswith('seggs') and message.channel.id in (806838914806710282, 746603176421097514): #RMI-KB degeneral, test server
         msg = cc.seggs(message.author)
         if (msg != ""): await message.channel.send(msg)
 
-    if message.content.startswith(command_prefix + 'crypto'):
+    if message.content.startswith(command_prefix + 'price') and message.channel.id in (816515392809730049, 746603176421097514): #RMI-KB crypto, test server
         msg = cc.crypto(cg , message.content, message.author)
         if (msg != ""): await message.channel.send(msg)
     
