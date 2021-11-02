@@ -24,7 +24,6 @@ client = discord.Client(intents = intents)
 @client.event
 async def on_ready():
     print("monke reporting".format(client))
-    print(f'{client.user.name} has joined Discord!')
 
 # default triggers
 @client.event
@@ -33,13 +32,16 @@ async def on_message(message):
         return
 
     if message.content.startswith('bepis'):
-        await message.channel.send(cc.bepisMonke())
+        msg = cc.bepisMonke(message.author)
+        if (msg != ""): await message.channel.send(msg)
 
     if message.content.startswith('seggs'):
-        await message.channel.send(cc.seggs())
+        msg = cc.seggs(message.author)
+        if (msg != ""): await message.channel.send(msg)
 
     if message.content.startswith(command_prefix + 'crypto'):
-        await message.channel.send(cc.crypto(cg , message.content))
+        msg = cc.crypto(cg , message.content, message.author)
+        if (msg != ""): await message.channel.send(msg)
     
 
 TOKEN = open("module/token.txt","r")
