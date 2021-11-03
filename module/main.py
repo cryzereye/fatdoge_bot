@@ -32,15 +32,23 @@ async def on_message(message):
         return
 
     if message.content.startswith('bepis') and message.channel.id in (806838914806710282, 746603176421097514): #RMI-KB degeneral, test server
-        msg = cc.bepisMonke(message.author)
+        msg = cc.bepisMonke(str(message.author))
         if (msg != ""): await message.channel.send(msg)
 
     if message.content.startswith('seggs') and message.channel.id in (806838914806710282, 746603176421097514): #RMI-KB degeneral, test server
-        msg = cc.seggs(message.author)
+        msg = cc.seggs(str(message.author))
+        if (msg != ""): await message.channel.send(msg)
+
+    if message.content.startswith(command_prefix +'lb') and message.channel.id in (806838914806710282, 746603176421097514): #RMI-KB degeneral, test server
+        msg = cc.leaderboard(str(message.author), message.content)
+        if (msg != ""): await message.channel.send(msg)
+
+    if message.content.startswith(command_prefix +'winrate') and message.channel.id in (806838914806710282, 746603176421097514): #RMI-KB degeneral, test server
+        msg = cc.winrate(str(message.author), message.content)
         if (msg != ""): await message.channel.send(msg)
 
     if message.content.startswith(command_prefix + 'price') and message.channel.id in (816515392809730049, 746603176421097514): #RMI-KB crypto, test server
-        msg = cc.crypto(cg , message.content, message.author)
+        msg = cc.crypto(cg , message.content, str(message.author))
         if (msg != ""): await message.channel.send(msg)
     
 
