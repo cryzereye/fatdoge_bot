@@ -16,7 +16,7 @@ intents = discord.Intents.default()
 intents.typing = True
 
 #general bot setup
-command_prefix='!'
+command_prefix='^'
 bot = commands.Bot(command_prefix)
 client = discord.Client(intents = intents)
 
@@ -31,11 +31,13 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.startswith('bepis') and message.channel.id in (806838914806710282, 746603176421097514): #RMI-KB degeneral, test server
+    lowerMSG = message.content.lower()
+
+    if str("bepis") in lowerMSG and message.channel.id in (806838914806710282, 746603176421097514): #RMI-KB degeneral, test server
         msg = cc.bepisMonke(str(message.author))
         if (msg != ""): await message.channel.send(msg)
 
-    if message.content.startswith('seggs') and message.channel.id in (806838914806710282, 746603176421097514): #RMI-KB degeneral, test server
+    if str("seggs") in lowerMSG and message.channel.id in (806838914806710282, 746603176421097514): #RMI-KB degeneral, test server
         msg = cc.seggs(str(message.author))
         if (msg != ""): await message.channel.send(msg)
 
@@ -49,6 +51,10 @@ async def on_message(message):
 
     if message.content.startswith(command_prefix + 'price') and message.channel.id in (816515392809730049, 746603176421097514): #RMI-KB crypto, test server
         msg = cc.crypto(cg , message.content, str(message.author))
+        if (msg != ""): await message.channel.send(msg)
+
+    if message.content.startswith(command_prefix + 'help') and message.channel.id in (816515392809730049, 746603176421097514, 806838914806710282): #RMI-KB crypto, test server, RMI-KB degeneral
+        msg = cc.help()
         if (msg != ""): await message.channel.send(msg)
     
 

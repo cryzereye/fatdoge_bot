@@ -182,3 +182,16 @@ def leaderboard(user, msg):
 
     returnMsg = returnMsg + "```"
     return returnMsg
+
+def help():
+    s = ("```AVAILABLE COMMANDS:\n"
+            "only in degeneral:\n"
+            "bepis\n"
+            "seggs\n"
+            "^lb <bepis/seggs>\n"
+            "^winrate <bepis/seggs>\n\n"
+            "only in crypto\n"
+            "^price <coin1> <coin2(optional)>\n"
+            "```"
+        )
+    return s
