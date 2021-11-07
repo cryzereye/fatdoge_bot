@@ -148,6 +148,8 @@ def winrate(user, msg):
 
 
 def leaderboard(user, msg):
+    record = []
+
     try:
         list = msg.split(" ")
         game = list[1]
@@ -157,3 +159,26 @@ def leaderboard(user, msg):
         util.logger(str(user) + " asked for LB of an invalid game: " + msg)
         return "```Game not found!```"
     util.logger(str(user) + " asked for LB of " + game)
+
+
+    returnMsg = "```LEADERBOARD FOR "+ game +"\n\nUser\t\t\t\t\t\t\t\t\t|  Winrate  |  Tries  |  Wins  |\n"
+    try:
+        if game == "bepis":
+            record = sorted(bepisLB, key=lambda item: item["wins"]/item["tries"]*100, reverse=True)
+        if game == "seggs":
+            record = sorted(seggsLB, key=lambda item: item["wins"]/item["tries"]*100, reverse=True)
+            if record == []:
+                raise ValueError
+    except:
+        return "```No leaderboard for " + game + " game```"
+
+    for x in record:
+        winrate = "{:05.2f}".format(x["wins"]/x["tries"]*100)
+        winrateStr = winrate + int(7 - len(winrate)) * " "
+        tries = str(x["tries"]) + int(7 - len(str(x["tries"]))) * " "
+        wins = str(x["wins"]) + int(6 - len(str(x["wins"]))) * " "
+        returnMsg = returnMsg + x["user"] + str(int(40 - len(x["user"])) * " ") + "|  " + winrateStr + "  |  " + tries + "|  " + wins + "|\n"
+
+
+    returnMsg = returnMsg + "```"
+    return returnMsg
