@@ -18,13 +18,13 @@ def logger(message):
     ts_string = now.strftime("%d/%m/%Y %H:%M:%S")
 
     if os.path.exists("logs/log_" + dt_string + ".log"):
-        f = open("logs/log_" + dt_string + ".log", "a")
+        f = open("logs/log_" + dt_string + ".log", "a",  encoding="utf8")
     else:
-        f = open("logs/log_" + dt_string + ".log", "x")
+        f = open("logs/log_" + dt_string + ".log", "x",  encoding="utf8")
     f.write(ts_string + "  ---  " + message + "\n")
     f.close()
 
 
 # crypto() functions
 def getCoinID(arg, coins):
-    return list(filter(lambda x:x["Symbol"]==arg,coins))
+    return list(filter(lambda x:x["symbol"]==arg,coins))
