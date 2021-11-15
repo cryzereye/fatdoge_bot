@@ -171,12 +171,15 @@ def leaderboard(user, msg):
     except:
         return "```No leaderboard for " + game + " game```"
 
+    ctr = 0
     for x in record:
         winrate = "{:05.2f}".format(x["wins"]/x["tries"]*100)
         winrateStr = winrate + int(7 - len(winrate)) * " "
         tries = str(x["tries"]) + int(7 - len(str(x["tries"]))) * " "
         wins = str(x["wins"]) + int(6 - len(str(x["wins"]))) * " "
         returnMsg = returnMsg + x["user"] + str(int(40 - len(x["user"])) * " ") + "|  " + winrateStr + "  |  " + tries + "|  " + wins + "|\n"
+        ctr+=1
+        if ctr == 5: break
 
 
     returnMsg = returnMsg + "```"
