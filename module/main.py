@@ -20,6 +20,7 @@ intents.typing = True
 command_prefix='^'
 bot = commands.Bot(command_prefix)
 client = discord.Client(intents = intents)
+config = cc.loadConfig()
 
 # server status
 @client.event
@@ -35,7 +36,7 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.channel.id in (746603176421097514,746603176421097514, 746603176421097514): #816515392809730049 rmi crypto, 816515392809730049 bot spam
+    if message.channel.id in config["allowed_channels"]:
         lowerMSG = message.content.lower()
         if message.content.startswith(command_prefix + 'price') or message.content.startswith(command_prefix + 'p'):
             waitMsg = await message.channel.send("```Awaiting " + message.content + " response...```")

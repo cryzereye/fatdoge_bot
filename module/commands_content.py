@@ -194,3 +194,6 @@ def help():
             "```"
         )
     return s
+
+def loadConfig():
+    return util.loadJsonFile("config.json", "r")
