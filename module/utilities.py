@@ -27,4 +27,4 @@ def logger(message):
 
 # crypto() functions
 def getCoinID(arg, coins):
-    return list(filter(lambda x:x["Symbol"]==arg,coins))
+    return list(filter(lambda x:x["symbol"]==arg,coins))

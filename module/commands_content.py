@@ -1,13 +1,13 @@
 from genericpath import exists
-import json
+import json, requests
 import random as rand
 import utilities as util
 
 
-try:
-    coins = util.loadJsonFile("coins.json", "r")
-except:
-    print("Coins.json not found")
+# CoinGeckoAPI coins list
+coins = {}
+while coins == {}:
+    coins = requests.get("https://api.coingecko.com/api/v3/coins/list").json()
 
 with open("bepisLB.json", "r") as bepisLB_file:
     bepisLB = json.load(bepisLB_file)
@@ -28,11 +28,11 @@ def crypto(cg, args, user):
             return "```Input a valid token!```"
         else:
             coin1 = list[1]
-            coin1_ID = util.getCoinID(coin1.lower(), coins)[0]["Id"]
+            coin1_ID = util.getCoinID(coin1.lower(), coins)[0]["id"]
             result = cg.get_price(ids=coin1_ID, vs_currencies='usd')
             if len(list) > 2:
                 coin2 = list[2]
-                coin2_ID = util.getCoinID(coin2.lower(), coins)[0]["Id"]
+                coin2_ID = util.getCoinID(coin2.lower(), coins)[0]["id"]
                 result2 = cg.get_price(ids=coin2_ID, vs_currencies='usd')
                 return "```" + coin1.upper() + "/" + coin2.upper() + " : " + str(result[coin1_ID]['usd']/result2[coin2_ID]['usd']) + "```"
 
@@ -120,31 +120,30 @@ def seggs(user):
     return result
 
 
-def winrate(user, msg):
-    record = {}
-
+def winrate(user):
+    recordB = {}
+    recordS = {}
+    returnMsg = "```Winrates for " + user + "\n"
     try:
-        splitmsg = msg.split(" ")
-        game = splitmsg[1]
-        if game not in ("bepis", "seggs"):
+        recordB = list(filter(lambda x:x["user"]==user,bepisLB))[0]
+        if recordB == []:
             raise ValueError
+        winRateB = recordB["wins"]/recordB["tries"]* 100
+        winRateB_str = "{:.2f}".format(winRateB)
+        returnMsg = returnMsg + "bepis:   " + str(recordB["tries"]) + "/" + str(recordB["wins"]) + "(" + str(winRateB_str) + "%)\n"
     except:
-        util.logger(user + " asked for winrate of an invalid game: " + msg)
-        return "```Game not found!```"
-    util.logger(user + " asked for winrate of " + game)
-
+        returnMsg = returnMsg + "Haven't played bepis gacha\n"
     try:
-        if game == "bepis":
-            record = list(filter(lambda x:x["user"]==user,bepisLB))[0]
-        if game == "seggs":
-            record = list(filter(lambda x:x["user"]==user,seggsLB))[0]
-        if record == []:
+        recordS = list(filter(lambda x:x["user"]==user,seggsLB))[0]
+        if recordS == []:
             raise ValueError
+        winRateS = recordS["wins"]/recordS["tries"]* 100
+        winRateS_str = "{:.2f}".format(winRateS)
+        returnMsg = returnMsg + "seggs:   " + str(recordS["tries"]) + "/" + str(recordS["wins"]) + "(" + str(winRateS_str) + "%)\n"
     except:
-        return "```No winrate record detected for " + user + "```"
-    winRate = record["wins"]/record["tries"]* 100
-    winRate_str = "{:.2f}".format(winRate)
-    return "```" + user + "\n" + str(record["wins"]) + "/" + str(record["tries"]) + " (" + winRate_str + "%)```"
+        returnMsg = returnMsg + "Haven't played seggs gacha\n"
+
+    return returnMsg + "```"
 
 
 def leaderboard(user, msg):

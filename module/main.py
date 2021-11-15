@@ -28,35 +28,26 @@ async def on_ready():
 # default triggers
 @client.event
 async def on_message(message):
+    msg = ""
     if message.author == client.user:
         return
 
-    lowerMSG = message.content.lower()
+    if message.channel.id in (746603176421097514,746603176421097514): #816515392809730049 rmi crypto
+        lowerMSG = message.content.lower()
+        if message.content.startswith(command_prefix + 'price') or message.content.startswith(command_prefix + 'p'):
+            msg = cc.crypto(cg , message.content, str(message.author))
+        elif message.content.startswith(command_prefix + 'help'):
+            msg = cc.help()
+        elif message.content.startswith(command_prefix +'lb'): 
+            msg = cc.leaderboard(str(message.author), message.content)
+        elif message.content.startswith(command_prefix +'winrate') or message.content.startswith(command_prefix +'wr'): 
+            msg = cc.winrate(str(message.author))
+        elif str("bepis") in lowerMSG: 
+            msg = cc.bepisMonke(str(message.author))
+        elif str("seggs") in lowerMSG: 
+            msg = cc.seggs(str(message.author))
 
-    if str("bepis") in lowerMSG and message.channel.id in (806838914806710282, 746603176421097514): #RMI-KB degeneral, test server
-        msg = cc.bepisMonke(str(message.author))
-        if (msg != ""): await message.channel.send(msg)
-
-    if str("seggs") in lowerMSG and message.channel.id in (806838914806710282, 746603176421097514): #RMI-KB degeneral, test server
-        msg = cc.seggs(str(message.author))
-        if (msg != ""): await message.channel.send(msg)
-
-    if message.content.startswith(command_prefix +'lb') and message.channel.id in (806838914806710282, 746603176421097514): #RMI-KB degeneral, test server
-        msg = cc.leaderboard(str(message.author), message.content)
-        if (msg != ""): await message.channel.send(msg)
-
-    if message.content.startswith(command_prefix +'winrate') and message.channel.id in (806838914806710282, 746603176421097514): #RMI-KB degeneral, test server
-        msg = cc.winrate(str(message.author), message.content)
-        if (msg != ""): await message.channel.send(msg)
-
-    if message.content.startswith(command_prefix + 'price') and message.channel.id in (816515392809730049, 746603176421097514): #RMI-KB crypto, test server
-        msg = cc.crypto(cg , message.content, str(message.author))
-        if (msg != ""): await message.channel.send(msg)
-
-    if message.content.startswith(command_prefix + 'help') and message.channel.id in (816515392809730049, 746603176421097514, 806838914806710282): #RMI-KB crypto, test server, RMI-KB degeneral
-        msg = cc.help()
-        if (msg != ""): await message.channel.send(msg)
+    if (msg != ""): await message.channel.send(msg)
     
-
 TOKEN = open("module/token.txt","r")
 client.run(TOKEN.readline()) 
