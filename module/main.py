@@ -1,4 +1,5 @@
 #large
+from discord import activity
 from flask import Flask
 import discord
 from discord.ext import commands
@@ -23,7 +24,9 @@ client = discord.Client(intents = intents)
 # server status
 @client.event
 async def on_ready():
-    print("monke reporting".format(client))
+    game = discord.Game("with monke Bepis")
+    await client.change_presence(activity = game)
+    print("monke reporting")
 
 # default triggers
 @client.event
@@ -32,11 +35,10 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.channel.id in (746603176421097514,746603176421097514): #816515392809730049 rmi crypto
+    if message.channel.id in (746603176421097514,746603176421097514, 746603176421097514): #816515392809730049 rmi crypto, 816515392809730049 bot spam
         lowerMSG = message.content.lower()
         if message.content.startswith(command_prefix + 'price') or message.content.startswith(command_prefix + 'p'):
-            await message.channel.send("```Awaiting " + message.content + " response...```")
-            waitMsg = message.channel.last_message
+            waitMsg = await message.channel.send("```Awaiting " + message.content + " response...```")
             msg = cc.crypto(cg , message.content, str(message.author))
             await waitMsg.edit(content = msg)
             return
