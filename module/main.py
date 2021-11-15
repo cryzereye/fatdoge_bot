@@ -35,7 +35,11 @@ async def on_message(message):
     if message.channel.id in (746603176421097514,746603176421097514): #816515392809730049 rmi crypto
         lowerMSG = message.content.lower()
         if message.content.startswith(command_prefix + 'price') or message.content.startswith(command_prefix + 'p'):
+            await message.channel.send("```Awaiting " + message.content + " response...```")
+            waitMsg = message.channel.last_message
             msg = cc.crypto(cg , message.content, str(message.author))
+            await waitMsg.edit(content = msg)
+            return
         elif message.content.startswith(command_prefix + 'help'):
             msg = cc.help()
         elif message.content.startswith(command_prefix +'lb'): 
