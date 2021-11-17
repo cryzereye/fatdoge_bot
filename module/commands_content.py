@@ -44,9 +44,9 @@ def crypto(cg, args, user):
                         result2 = cg.get_price(ids=coin2_ID, vs_currencies='usd')
                     except:
                         pass
-                return "```" + coin1.upper() + "/" + coin2.upper() + " : " + str(result[coin1_ID]['usd']/result2[coin2_ID]['usd']) + "```"
+                return "```"+ coin1_ID + "/" + coin2_ID + "  " + coin1.upper() + "/" + coin2.upper() + " : " + str(result[coin1_ID]['usd']/result2[coin2_ID]['usd']) + "```"
 
-            return "```" + coin1.upper() + "/USD : " + str(result[coin1_ID]['usd']) + "```"
+            return "```" + coin1_ID + "  " + coin1.upper() + "/USD : " + str(result[coin1_ID]['usd']) + "```"
     except:
         return "```Input a valid token!```"
 
