@@ -22,6 +22,8 @@ with open("seggsLB.json", "r") as seggsLB_file:
 # had to make a workaround for token-token rates
 def crypto(cg, args, user):
     util.logger(str(user) + " queried " + args)
+    result = {}
+    result2 = {}
     try:
         list = args.split(" ")
         if len(list) == 1:
@@ -29,11 +31,19 @@ def crypto(cg, args, user):
         else:
             coin1 = list[1]
             coin1_ID = util.getCoinID(coin1.lower(), coins)[0]["id"]
-            result = cg.get_price(ids=coin1_ID, vs_currencies='usd')
+            while result == {}:
+                try:
+                    result = cg.get_price(ids=coin1_ID, vs_currencies='usd')
+                except:
+                    pass
             if len(list) > 2:
                 coin2 = list[2]
                 coin2_ID = util.getCoinID(coin2.lower(), coins)[0]["id"]
-                result2 = cg.get_price(ids=coin2_ID, vs_currencies='usd')
+                while result2 == {}:
+                    try:
+                        result2 = cg.get_price(ids=coin2_ID, vs_currencies='usd')
+                    except:
+                        pass
                 return "```" + coin1.upper() + "/" + coin2.upper() + " : " + str(result[coin1_ID]['usd']/result2[coin2_ID]['usd']) + "```"
 
             return "```" + coin1.upper() + "/USD : " + str(result[coin1_ID]['usd']) + "```"
