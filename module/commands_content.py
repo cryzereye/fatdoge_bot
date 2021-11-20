@@ -135,6 +135,7 @@ def seggs(user):
 
 
 def winrate(user):
+    util.logger(str(user) + " queried winrate")
     recordB = {}
     recordS = {}
     returnMsg = "```Winrates for " + user + "\n"
@@ -199,15 +200,17 @@ def leaderboard(user, msg):
     returnMsg = returnMsg + "```"
     return returnMsg
 
-def help():
+def help(user):
+    util.logger(str(user) + " queried help")
     s = ("```AVAILABLE COMMANDS:\n"
-            "only in degeneral:\n"
+            "only in #bot-spam and #crypto:\n"
             "bepis\n"
             "seggs\n"
             "^lb <bepis/seggs>\n"
-            "^winrate <bepis/seggs>\n\n"
-            "only in crypto\n"
-            "^price <coin1> <coin2(optional)>\n"
+            "^wr\n"
+            "^p <coin1> <coin2(optional)>\n\n"
+            "only in #degeneral:\n"
+            "^gagofy"            
             "```"
         )
     return s
@@ -215,7 +218,8 @@ def help():
 def loadConfig():
     return util.loadJsonFile("config.json", "r")
 
-def gagofy():
+def gagofy(user):
+    util.logger(str(user) + " queried gagofy")
     length = len(gagofyData["statements"])
-    randNum = rand.randint(0, length)
+    randNum = rand.randint(0, length - 1)
     return gagofyData["statements"][randNum]

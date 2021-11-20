@@ -43,8 +43,6 @@ async def on_message(message):
             msg = cc.crypto(cg , message.content, str(message.author))
             await waitMsg.edit(content = msg)
             return
-        elif message.content.startswith(command_prefix + 'help'):
-            msg = cc.help()
         elif message.content.startswith(command_prefix +'lb'): 
             msg = cc.leaderboard(str(message.author), message.content)
         elif message.content.startswith(command_prefix +'winrate') or message.content.startswith(command_prefix +'wr'): 
@@ -55,7 +53,9 @@ async def on_message(message):
             msg = cc.seggs(str(message.author))
     
     if message.content.startswith(command_prefix + 'gagofy') and message.channel.id == 806838914806710282:
-        msg = cc.gagofy()
+        msg = cc.gagofy(str(message.author))
+    elif message.content.startswith(command_prefix + 'help'):
+        msg = cc.help(str(message.author))
 
     if (msg != ""): await message.channel.send(msg)
     
