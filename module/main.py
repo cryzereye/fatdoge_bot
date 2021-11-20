@@ -53,6 +53,9 @@ async def on_message(message):
             msg = cc.bepisMonke(str(message.author))
         elif str("seggs") in lowerMSG: 
             msg = cc.seggs(str(message.author))
+    
+    if message.content.startswith(command_prefix + 'gagofy') and message.channel.id == 806838914806710282:
+        msg = cc.gagofy()
 
     if (msg != ""): await message.channel.send(msg)
     

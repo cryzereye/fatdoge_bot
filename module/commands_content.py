@@ -17,6 +17,10 @@ with open("seggsLB.json", "r") as seggsLB_file:
     seggsLB = json.load(seggsLB_file)
     seggsLB_file.close()
 
+with open("gagofy.json", "r") as gagofy_file:
+    gagofyData = json.load(gagofy_file)
+    gagofy_file.close()
+
 
 # CoinGeckoAPI can only show rates against USD
 # had to make a workaround for token-token rates
@@ -210,3 +214,8 @@ def help():
 
 def loadConfig():
     return util.loadJsonFile("config.json", "r")
+
+def gagofy():
+    length = len(gagofyData["statements"])
+    randNum = rand.randint(0, length)
+    return gagofyData["statements"][randNum]
