@@ -2,7 +2,7 @@ from genericpath import exists
 import json, requests
 import random as rand
 import utilities as util
-
+from datetime import datetime
 
 # CoinGeckoAPI coins list
 coins = {}
@@ -21,6 +21,30 @@ with open("gagofy.json", "r") as gagofy_file:
     gagofyData = json.load(gagofy_file)
     gagofy_file.close()
 
+with open("mooncycle.json", "r") as moon_file:
+    moonData = json.load(moon_file)
+    moon_file.close()
+
+# return next new moon and full moon dates
+# from manual list fetched from "https://www.timeanddate.com/moon/phases/@220244"
+def whenmoon():
+    currentDate = datetime.today()
+    fullMoonSTR = ""
+    newMoonSTR = ""
+
+    for x in moonData["fullmoons"]:
+        loopDate = datetime.strptime(x, '%d/%m/%Y')
+        if currentDate < loopDate:
+            fullMoonSTR = datetime.strftime(loopDate, '%B %d %Y')
+            break
+    
+    for x in moonData["newmoons"]:
+        loopDate = datetime.strptime(x, '%d/%m/%Y')
+        if currentDate < loopDate:
+            newMoonSTR = datetime.strftime(loopDate, '%B %d %Y')
+            break
+
+    return "```Next FULL moon:  " + fullMoonSTR + "\nNext NEW moon:   " + newMoonSTR + "```"
 
 # CoinGeckoAPI can only show rates against USD
 # had to make a workaround for token-token rates
@@ -139,15 +163,15 @@ def winrate(user):
     recordB = {}
     recordS = {}
     returnMsg = "```Winrates for " + user + "\n"
-    try:
-        recordB = list(filter(lambda x:x["user"]==user,bepisLB))[0]
-        if recordB == []:
-            raise ValueError
-        winRateB = recordB["wins"]/recordB["tries"]* 100
-        winRateB_str = "{:.2f}".format(winRateB)
-        returnMsg = returnMsg + "bepis:   " + str(recordB["tries"]) + "/" + str(recordB["wins"]) + "(" + str(winRateB_str) + "%)\n"
-    except:
-        returnMsg = returnMsg + "Haven't played bepis gacha\n"
+    #try:
+    #    recordB = list(filter(lambda x:x["user"]==user,bepisLB))[0]
+    #    if recordB == []:
+    #        raise ValueError
+    #    winRateB = recordB["wins"]/recordB["tries"]* 100
+    #    winRateB_str = "{:.2f}".format(winRateB)
+    #    returnMsg = returnMsg + "bepis:   " + str(recordB["tries"]) + "/" + str(recordB["wins"]) + "(" + str(winRateB_str) + "%)\n"
+    #except:
+    #    returnMsg = returnMsg + "Haven't played bepis gacha\n"
     try:
         recordS = list(filter(lambda x:x["user"]==user,seggsLB))[0]
         if recordS == []:
@@ -167,7 +191,7 @@ def leaderboard(user, msg):
     try:
         list = msg.split(" ")
         game = list[1]
-        if game not in ("bepis", "seggs"):
+        if game not in ("seggs", "seggs"):
             raise ValueError
     except:
         util.logger(str(user) + " asked for LB of an invalid game: " + msg)
@@ -177,8 +201,8 @@ def leaderboard(user, msg):
 
     returnMsg = "```LEADERBOARD FOR "+ game +"\n\nUser\t\t\t\t\t\t\t\t\t|  Winrate  |  Tries  |  Wins  |\n"
     try:
-        if game == "bepis":
-            record = sorted(bepisLB, key=lambda item: item["wins"]/item["tries"]*100, reverse=True)
+        #if game == "bepis":
+        #    record = sorted(bepisLB, key=lambda item: item["wins"]/item["tries"]*100, reverse=True)
         if game == "seggs":
             record = sorted(seggsLB, key=lambda item: item["wins"]/item["tries"]*100, reverse=True)
             if record == []:
@@ -204,9 +228,8 @@ def help(user):
     util.logger(str(user) + " queried help")
     s = ("```AVAILABLE COMMANDS:\n"
             "only in #bot-spam and #crypto:\n"
-            "bepis\n"
             "seggs\n"
-            "^lb <bepis/seggs>\n"
+            "^lb <seggs>\n"
             "^wr\n"
             "^p <coin1> <coin2(optional)>\n\n"
             "only in #degeneral:\n"

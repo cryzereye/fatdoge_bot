@@ -25,9 +25,9 @@ config = cc.loadConfig()
 # server status
 @client.event
 async def on_ready():
-    game = discord.Game("with monke Bepis")
+    game = discord.Game("with belly fats")
     await client.change_presence(activity = game)
-    print("monke reporting")
+    print("bot reporting")
 
 # default triggers
 @client.event
@@ -47,10 +47,12 @@ async def on_message(message):
             msg = cc.leaderboard(str(message.author), message.content)
         elif message.content.startswith(command_prefix +'winrate') or message.content.startswith(command_prefix +'wr'): 
             msg = cc.winrate(str(message.author))
-        elif str("bepis") in lowerMSG: 
-            msg = cc.bepisMonke(str(message.author))
+        #elif str("bepis") in lowerMSG: 
+        #    msg = cc.bepisMonke(str(message.author))
         elif str("seggs") in lowerMSG: 
             msg = cc.seggs(str(message.author))
+        elif message.content.startswith(command_prefix +'whenmoon'):
+            msg = cc.whenmoon()
     
     if message.content.startswith(command_prefix + 'gagofy') and message.channel.id == 806838914806710282:
         msg = cc.gagofy(str(message.author))
