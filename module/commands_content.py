@@ -27,7 +27,8 @@ with open("mooncycle.json", "r") as moon_file:
     moonData = json.load(moon_file)
     moon_file.close()
 
-#returns Binance's p2p min-buy/max-sell prices for PHP
+# returns USD/PHP conversion rate
+# Binance has no P2P endpoint for prices *cries*
 def p2p():
     response = requests.get(EXCHANGEAPI_URL)   
     return "```USD/PHP:    " + str(response.json()["conversion_rate"]) + "```"
