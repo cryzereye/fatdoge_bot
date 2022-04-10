@@ -38,7 +38,7 @@ async def on_message(message):
 
     if message.channel.id in config["allowed_channels"]:
         lowerMSG = message.content.lower()
-        if message.content.startswith(command_prefix + 'price') or message.content.startswith(command_prefix + 'p'):
+        if message.content.startswith(command_prefix + 'price'):
             waitMsg = await message.channel.send("```Awaiting " + message.content + " response...```")
             msg = cc.crypto(cg , message.content, str(message.author))
             await waitMsg.edit(content = msg)
@@ -53,6 +53,8 @@ async def on_message(message):
             msg = cc.seggs(str(message.author))
         elif message.content.startswith(command_prefix +'whenmoon'):
             msg = cc.whenmoon()
+        elif message.content.startswith(command_prefix +'p2p'):
+            msg = cc.p2p()
     
     if message.content.startswith(command_prefix + 'gagofy') and message.channel.id == 806838914806710282:
         msg = cc.gagofy(str(message.author))

@@ -4,6 +4,8 @@ import random as rand
 import utilities as util
 from datetime import datetime
 
+EXCHANGEAPI_URL = "https://v6.exchangerate-api.com/v6/0f0fe8fff10a61a1db6808dd/pair/USD/PHP"
+
 # CoinGeckoAPI coins list
 coins = {}
 while coins == {}:
@@ -24,6 +26,11 @@ with open("gagofy.json", "r") as gagofy_file:
 with open("mooncycle.json", "r") as moon_file:
     moonData = json.load(moon_file)
     moon_file.close()
+
+#returns Binance's p2p min-buy/max-sell prices for PHP
+def p2p():
+    response = requests.get(EXCHANGEAPI_URL)   
+    return "```USD/PHP:    " + str(response.json()["conversion_rate"]) + "```"
 
 # return next new moon and full moon dates
 # from manual list fetched from "https://www.timeanddate.com/moon/phases/@220244"
