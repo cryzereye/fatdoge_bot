@@ -56,6 +56,9 @@ def p2p(tradeType, payMethod):
     try:
         response = requests.post(P2PAPI_URL, json=data)
         r_data = response.json()
+        if len(r_data["data"]) == 0:
+            print(str(response))
+            raise Exception
     except:
         s = ("```Invalid p2p options entered!\n\n"
             "p2p (buy|sell) (gcash|ing|bank|ubop)"
@@ -67,7 +70,7 @@ def p2p(tradeType, payMethod):
     if payMethod != "":
         s += " for pay method " + payMethod
     s += "\n\n"
-    
+
     i = 0
     for x in r_data["data"]:
         payMethods = ""
