@@ -1,37 +1,58 @@
 from genericpath import exists
+from http.client import ResponseNotReady
 import json, requests
+from pickle import TRUE
 import random as rand
 import utilities as util
 from datetime import datetime
 
 EXCHANGEAPI_URL = "https://v6.exchangerate-api.com/v6/0f0fe8fff10a61a1db6808dd/pair/USD/PHP"
+P2PAPI_URL = "https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search"
 
 # CoinGeckoAPI coins list
 coins = {}
 while coins == {}:
     coins = requests.get("https://api.coingecko.com/api/v3/coins/list").json()
 
-with open("bepisLB.json", "r") as bepisLB_file:
+with open("json\\bepisLB.json", "r") as bepisLB_file:
     bepisLB = json.load(bepisLB_file)
     bepisLB_file.close()
 
-with open("seggsLB.json", "r") as seggsLB_file:
+with open("json\\seggsLB.json", "r") as seggsLB_file:
     seggsLB = json.load(seggsLB_file)
     seggsLB_file.close()
 
-with open("gagofy.json", "r") as gagofy_file:
+with open("json\\gagofy.json", "r") as gagofy_file:
     gagofyData = json.load(gagofy_file)
     gagofy_file.close()
 
-with open("mooncycle.json", "r") as moon_file:
+with open("json\\mooncycle.json", "r") as moon_file:
     moonData = json.load(moon_file)
     moon_file.close()
 
-# returns USD/PHP conversion rate
-# Binance has no P2P endpoint for prices *cries*
+# returns 1 Binance P2P USDT/PHP result with the lowest buying rate
 def p2p():
-    response = requests.get(EXCHANGEAPI_URL)   
-    return "```USD/PHP:    " + str(response.json()["conversion_rate"]) + "```"
+    data = {
+        "asset": "USDT",
+        "fiat": "PHP",
+        "merchantCheck": True,
+        "page": 1,
+        "publisherType": "merchant",
+        "rows": 1,
+        "tradeType": "BUY"
+    }
+
+    response = requests.post(P2PAPI_URL, json=data)
+    r_data = response.json()
+    print(r_data)
+    s = ("```"
+        "Binance P2P PHP/USDT:   " + str(r_data["data"][0]["adv"]["price"]) + "\n"
+        "Available USDT:         " + str(r_data["data"][0]["adv"]["surplusAmount"]) + "\n"
+        "Merchant Name:          " + str(r_data["data"][0]["advertiser"]["nickName"]) + "\n"
+        "```"
+        )
+
+    return s
 
 # return next new moon and full moon dates
 # from manual list fetched from "https://www.timeanddate.com/moon/phases/@220244"
@@ -247,7 +268,7 @@ def help(user):
     return s
 
 def loadConfig():
-    return util.loadJsonFile("config.json", "r")
+    return util.loadJsonFile("json\\config.json", "r")
 
 def gagofy(user):
     util.logger(str(user) + " queried gagofy")
