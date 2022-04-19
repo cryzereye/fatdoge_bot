@@ -6,7 +6,6 @@ import random as rand
 import utilities as util
 from datetime import datetime
 
-EXCHANGEAPI_URL = "https://v6.exchangerate-api.com/v6/0f0fe8fff10a61a1db6808dd/pair/USD/PHP"
 P2PAPI_URL = "https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search"
 
 # CoinGeckoAPI coins list
