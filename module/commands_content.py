@@ -38,19 +38,30 @@ def p2p():
         "merchantCheck": True,
         "page": 1,
         "publisherType": "merchant",
-        "rows": 1,
+        "rows": 5,
         "tradeType": "BUY"
     }
 
     response = requests.post(P2PAPI_URL, json=data)
     r_data = response.json()
-    print(r_data)
-    s = ("```"
-        "Binance P2P PHP/USDT:   " + str(r_data["data"][0]["adv"]["price"]) + "\n"
-        "Available USDT:         " + str(r_data["data"][0]["adv"]["surplusAmount"]) + "\n"
-        "Merchant Name:          " + str(r_data["data"][0]["advertiser"]["nickName"]) + "\n"
-        "```"
+
+    s = "```"
+    i = 0
+    for x in r_data["data"]:
+        payMethods = ""
+        for y in r_data["data"][i]["adv"]["tradeMethods"]:
+            payMethods += str(y["payType"]) + " "
+
+        s += (
+            "Binance P2P PHP/USDT:   " + str(r_data["data"][i]["adv"]["price"]) + "\n"
+            "Available USDT:         " + str(r_data["data"][i]["adv"]["surplusAmount"]) + "\n"
+            "Merchant Name:          " + str(r_data["data"][i]["advertiser"]["nickName"]) + "\n"
+            "Payment methods:        " + payMethods + "\n"
+            "================================================\n\n"
         )
+        i+=1
+
+    s += "```"
 
     return s
 
