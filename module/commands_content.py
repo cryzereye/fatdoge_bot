@@ -1,6 +1,7 @@
 from genericpath import exists
 from http.client import ResponseNotReady
 import json, requests
+from posixpath import split
 from pickle import TRUE
 import random as rand
 import utilities as util
@@ -29,8 +30,18 @@ with open("json\\mooncycle.json", "r") as moon_file:
     moonData = json.load(moon_file)
     moon_file.close()
 
+# allows user to get notified when Binance P2P PHP/USDT rate crosses inputted rate
+# 5 secs refresh: to be implemented
+def p2pnotify(user, msg):
+    try:
+        list = msg.split(" ")
+        rate = float(list[2])
+        return "<@" + str(user) + "> will be notified once PHP/USDT P2P buy rate is below or equal to " + str(f'{rate:0.2f}')
+    except:
+        return "Invalid p2p notify command! Please check rate inputted!"
+    
 # returns 1 Binance P2P USDT/PHP result with the lowest buying rate
-def p2p():
+def p2p(tradeType, payMethod):
     data = {
         "asset": "USDT",
         "fiat": "PHP",
@@ -38,13 +49,25 @@ def p2p():
         "page": 1,
         "publisherType": "merchant",
         "rows": 5,
-        "tradeType": "BUY"
+        "tradeType": tradeType,
+        "payTypes": [payMethod]
     }
 
-    response = requests.post(P2PAPI_URL, json=data)
-    r_data = response.json()
+    try:
+        response = requests.post(P2PAPI_URL, json=data)
+        r_data = response.json()
+    except:
+        s = ("```Invalid p2p options entered!\n\n"
+            "p2p (buy|sell) (gcash|ing|bank|ubop)"
+            "```"
+        )
+        return s
 
-    s = "```"
+    s = "```Binance P2P PHP/USDT " +  tradeType
+    if payMethod != "":
+        s += " for pay method " + payMethod
+    s += "\n\n"
+    
     i = 0
     for x in r_data["data"]:
         payMethods = ""

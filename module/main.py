@@ -54,7 +54,14 @@ async def on_message(message):
         elif message.content.startswith(command_prefix +'whenmoon'):
             msg = cc.whenmoon()
         elif message.content.startswith(command_prefix +'p2p'):
-            msg = cc.p2p()
+            if message.content.startswith(command_prefix +'p2p notify'):
+                msg = cc.p2pnotify(str(message.author.id), message.content)
+            elif message.content.startswith(command_prefix +'p2p buy'):
+                msg = cc.p2p('BUY', message.content.split(" ")[2])
+            elif message.content.startswith(command_prefix +'p2p sell'):
+                msg = cc.p2p('SELL', message.content.split(" ")[2])
+            else:
+                msg = cc.p2p('BUY', message.content.split(" ")[1])
     
     if message.content.startswith(command_prefix + 'gagofy') and message.channel.id == 806838914806710282:
         msg = cc.gagofy(str(message.author))
