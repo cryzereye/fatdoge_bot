@@ -56,12 +56,21 @@ async def on_message(message):
         elif message.content.startswith(command_prefix +'p2p'):
             if message.content.startswith(command_prefix +'p2p notify'):
                 msg = cc.p2pnotify(str(message.author.id), message.content)
-            elif message.content.startswith(command_prefix +'p2p buy'):
-                msg = cc.p2p('BUY', message.content.split(" ")[2])
+            elif message.content.startswith(command_prefix +'p2p buy'): # dirty fast workaround below
+                try:
+                    msg = cc.p2p('BUY', message.content.split(" ")[2])
+                except:
+                    msg = cc.p2p('BUY', "")
             elif message.content.startswith(command_prefix +'p2p sell'):
-                msg = cc.p2p('SELL', message.content.split(" ")[2])
+                try:
+                    msg = cc.p2p('SELL', message.content.split(" ")[2])
+                except:
+                    msg = cc.p2p('SELL', "")
             else:
-                msg = cc.p2p('BUY', message.content.split(" ")[1])
+                try:
+                    msg = cc.p2p('BUY', message.content.split(" ")[1])
+                except:
+                    msg = cc.p2p('BUY',"")
     
     if message.content.startswith(command_prefix + 'gagofy') and message.channel.id == 806838914806710282:
         msg = cc.gagofy(str(message.author))
