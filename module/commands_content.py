@@ -50,14 +50,15 @@ def p2p(tradeType, payMethod):
         "publisherType": "merchant",
         "rows": 5,
         "tradeType": tradeType,
-        "payTypes": [payMethod]
     }
+
+    if payMethod != "":
+        data.update({"payTypes": [payMethod]})
 
     try:
         response = requests.post(P2PAPI_URL, json=data)
         r_data = response.json()
         if len(r_data["data"]) == 0:
-            print(str(response))
             raise Exception
     except:
         s = ("```Invalid p2p options entered!\n\n"
