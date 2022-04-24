@@ -16,11 +16,13 @@ cg = CoinGeckoAPI()
 intents = discord.Intents.default()
 intents.typing = True
 
+#config load up
+config = cc.loadConfig()
+command_prefix = config["command_prefix"]
+
 #general bot setup
-command_prefix='^'
 bot = commands.Bot(command_prefix)
 client = discord.Client(intents = intents)
-config = cc.loadConfig()
 
 # server status
 @client.event
