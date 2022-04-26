@@ -7,7 +7,7 @@ import random as rand
 import utilities as util
 from datetime import datetime
 
-EXCHANGEAPI_URL = "https://v6.exchangerate-api.com/v6/0f0fe8fff10a61a1db6808dd/pair/USD/PHP"
+FIXERIOFXAPI_URL = "http://data.fixer.io/api/latest?access_key=419f3befde9b7e362bc748d9c767a966&symbols=USD,PHP,JPY&format=1"
 P2PAPI_URL = "https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search"
 
 # CoinGeckoAPI coins list
@@ -32,8 +32,14 @@ with open("json\\mooncycle.json", "r") as moon_file:
     moon_file.close()
 
 def fx():
-    response = requests.get(EXCHANGEAPI_URL)   
-    return "```USD/PHP:    " + str(response.json()["conversion_rate"]) + "```"
+    response = requests.get(FIXERIOFXAPI_URL) 
+    s = ("```"
+    "from: data.fixer.io/api\n\n"
+    "PHP/USD:\t" + str(float(response.json()["rates"]["PHP"])/float(response.json()["rates"]["USD"])) + "\n"
+    "PHP/EUR:\t" + str(response.json()["rates"]["PHP"]) + "\n"
+    "PHP/JPY:\t" + str(float(response.json()["rates"]["PHP"])/float(response.json()["rates"]["JPY"])) + "\n"
+    "```")
+    return s
 
 # allows user to get notified when Binance P2P PHP/USDT rate crosses inputted rate
 # 5 secs refresh: to be implemented
