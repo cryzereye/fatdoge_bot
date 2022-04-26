@@ -7,7 +7,7 @@ import random as rand
 import utilities as util
 from datetime import datetime
 
-FIXERIOFXAPI_URL = "http://data.fixer.io/api/latest?access_key=419f3befde9b7e362bc748d9c767a966&symbols=USD,PHP,JPY,RUB&format=1"
+FIXERIOFXAPI_URL = "http://data.fixer.io/api/latest?access_key=419f3befde9b7e362bc748d9c767a966&symbols=USD,PHP,JPY,RUB,KRW&format=1"
 P2PAPI_URL = "https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search"
 
 # CoinGeckoAPI coins list
@@ -39,6 +39,7 @@ def fx():
     "PHP/EUR:\t" + str(response.json()["rates"]["PHP"]) + "\n"
     "PHP/JPY:\t" + str(float(response.json()["rates"]["PHP"])/float(response.json()["rates"]["JPY"])) + "\n"
     "PHP/RUB:\t" + str(float(response.json()["rates"]["PHP"])/float(response.json()["rates"]["RUB"])) + "\n"
+    "PHP/KRW:\t" + str(float(response.json()["rates"]["PHP"])/float(response.json()["rates"]["KRW"])) + "\n"
     "```")
     return s
 
