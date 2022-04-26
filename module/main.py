@@ -45,6 +45,10 @@ async def on_message(message):
             msg = cc.crypto(cg , message.content, str(message.author))
             await waitMsg.edit(content = msg)
             return
+        elif message.content.startswith(command_prefix +'spot'):
+            msg = cc.spot(message.content.split(" ")[1], config["bikey"], config["s"])
+            #except:
+            #    msg = "```Missing Binance Spot Symbol Pair (ex: BTCUSDT)```"
         elif message.content.startswith(command_prefix +'lb'): 
             msg = cc.leaderboard(str(message.author), message.content)
         elif message.content.startswith(command_prefix +'winrate') or message.content.startswith(command_prefix +'wr'): 

@@ -6,6 +6,7 @@ from pickle import TRUE
 import random as rand
 import utilities as util
 from datetime import datetime
+from binance.spot import Spot
 
 FIXERIOFXAPI_URL = "http://data.fixer.io/api/latest?access_key=419f3befde9b7e362bc748d9c767a966&symbols=USD,PHP,JPY,RUB,KRW&format=1"
 P2PAPI_URL = "https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search"
@@ -30,6 +31,28 @@ with open("json\\gagofy.json", "r") as gagofy_file:
 with open("json\\mooncycle.json", "r") as moon_file:
     moonData = json.load(moon_file)
     moon_file.close()
+
+
+def spot(pair, k, s):
+    bin_client = Spot(key=k, secret=s)
+    s = "```From Binance Spot:\n\n"
+    if str.lower(pair) == "all":
+        watchlist = [
+            "BTCUSDT",
+            "ETHUSDT",
+            "LRCUSDT",
+            "ADAUSDT"
+        ]
+        
+        for x in range(0, len(watchlist)):
+            res = bin_client.ticker_price(watchlist[x])
+            s += "" + watchlist[x] + ":\t" + res["price"] + "\n"
+    else:
+        res = bin_client.ticker_price(pair)
+        s += "" + pair + ":\t" + res["price"] + "\n"
+
+    return s + "```"
+
 
 def fx():
     response = requests.get(FIXERIOFXAPI_URL) 
