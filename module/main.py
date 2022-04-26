@@ -16,7 +16,7 @@ cg = CoinGeckoAPI()
 intents = discord.Intents.default()
 intents.typing = True
 
-#config load up
+#config load
 config = cc.loadConfig()
 command_prefix = config["command_prefix"]
 
@@ -73,6 +73,8 @@ async def on_message(message):
                     msg = cc.p2p('BUY', message.content.split(" ")[1])
                 except:
                     msg = cc.p2p('BUY',"")
+        elif message.content.startswith(command_prefix +'fx'):
+            msg = cc.fx()
     
     if message.content.startswith(command_prefix + 'gagofy') and message.channel.id == 806838914806710282:
         msg = cc.gagofy(str(message.author))
