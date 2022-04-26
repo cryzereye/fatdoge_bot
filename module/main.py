@@ -40,15 +40,18 @@ async def on_message(message):
 
     if message.channel.id in config["allowed_channels"]:
         lowerMSG = message.content.lower()
+        options = ""
         if message.content.startswith(command_prefix + 'price'):
             waitMsg = await message.channel.send("```Awaiting " + message.content + " response...```")
             msg = cc.crypto(cg , message.content, str(message.author))
             await waitMsg.edit(content = msg)
             return
         elif message.content.startswith(command_prefix +'spot'):
-            msg = cc.spot(message.content.split(" ")[1], config["bikey"], config["s"])
-            #except:
-            #    msg = "```Missing Binance Spot Symbol Pair (ex: BTCUSDT)```"
+            try:
+                options = message.content.split(" ")[1]
+            except:
+                options = "all"
+            msg = cc.spot(options, config["bikey"], config["s"])
         elif message.content.startswith(command_prefix +'lb'): 
             msg = cc.leaderboard(str(message.author), message.content)
         elif message.content.startswith(command_prefix +'winrate') or message.content.startswith(command_prefix +'wr'): 
