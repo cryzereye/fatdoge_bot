@@ -154,6 +154,7 @@ def crypto(cg, args, user):
     util.logger(str(user) + " queried " + args)
     result = {}
     result2 = {}
+    s = "```From CoinGecko:\n\n"
     try:
         list = args.split(" ")
         if len(list) == 1:
@@ -174,11 +175,12 @@ def crypto(cg, args, user):
                         result2 = cg.get_price(ids=coin2_ID, vs_currencies='usd')
                     except:
                         pass
-                return "```"+ coin1_ID + "/" + coin2_ID + "  " + coin1.upper() + "/" + coin2.upper() + " : " + str(result[coin1_ID]['usd']/result2[coin2_ID]['usd']) + "```"
+                s += ""+ coin1_ID + "/" + coin2_ID + "  " + coin1.upper() + "/" + coin2.upper() + " : " + str(result[coin1_ID]['usd']/result2[coin2_ID]['usd'])
 
-            return "```" + coin1_ID + "  " + coin1.upper() + "/USD : " + str(result[coin1_ID]['usd']) + "```"
+            s += "" + coin1_ID + "  " + coin1.upper() + "/USD : " + str(result[coin1_ID]['usd'])
     except:
         return "```Input a valid token!```"
+    return s + "```"
 
 
 # gacha game to monke bepis
