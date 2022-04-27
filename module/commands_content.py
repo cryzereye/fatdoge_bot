@@ -339,7 +339,7 @@ def help(user):
             "^spot [binance pairing ex: BTCUSDT]\n"
             "^fx\n"
             "^p2p [buy|sell [gcash|ubop|bank|ing|others...]]\n"
-            "^price <coin1> <coin2(optional)>\n\n"
+            "^price coin1 [coin2: default is USD]\n\n"
             "only in #degeneral:\n"
             "^gagofy"
             "\n\n"
