@@ -6,6 +6,7 @@ from pycoingecko import CoinGeckoAPI
 
 #local
 import commands_content as cc
+import utilities as util
 
 #packages
 cg = CoinGeckoAPI()
@@ -15,7 +16,7 @@ intents = discord.Intents.default()
 intents.typing = True
 
 #config load
-config = cc.loadConfig()
+config = util.loadConfig()
 command_prefix = config["command_prefix"]
 
 #general bot setup
@@ -25,7 +26,7 @@ client = discord.Client(intents = intents)
 # server status
 @client.event
 async def on_ready():
-    game = discord.Game("with belly fats")
+    game = discord.Game("^help")
     await client.change_presence(activity = game)
     print("bot reporting")
 

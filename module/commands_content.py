@@ -1,8 +1,6 @@
 from genericpath import exists
 from http.client import ResponseNotReady
 import json, requests
-import math
-from posixpath import split
 from pickle import TRUE
 import random as rand
 import utilities as util
@@ -358,9 +356,6 @@ def help(user):
             "```"
         )
     return s
-
-def loadConfig():
-    return util.loadJsonFile("json\\config.json", "r")
 
 def gagofy(user):
     util.logger(str(user) + " queried gagofy")
