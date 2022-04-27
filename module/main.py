@@ -1,6 +1,5 @@
 #large
 from discord import activity
-from flask import Flask
 import discord
 from discord.ext import commands
 from pycoingecko import CoinGeckoAPI
@@ -9,7 +8,6 @@ from pycoingecko import CoinGeckoAPI
 import commands_content as cc
 
 #packages
-app = Flask(__name__)
 cg = CoinGeckoAPI()
 
 #permissions
@@ -89,6 +87,5 @@ async def on_message(message):
         msg = cc.help(str(message.author))
 
     if (msg != ""): await message.channel.send(msg)
-    
-TOKEN = open("module/token.txt","r")
-client.run(TOKEN.readline()) 
+
+client.run(config["token"])
