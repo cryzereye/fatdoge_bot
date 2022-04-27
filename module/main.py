@@ -80,11 +80,14 @@ async def on_message(message):
                     msg = cc.p2p('BUY',"", str(message.author))
         elif message.content.startswith(command_prefix +'fx'):
             msg = cc.fx(str(message.author))
+
     
     if message.content.startswith(command_prefix + 'gagofy') and message.channel.id == 806838914806710282:
         msg = cc.gagofy(str(message.author))
     elif message.content.startswith(command_prefix + 'help'):
         msg = cc.help(str(message.author))
+    elif message.content.startswith(command_prefix +'angry'):
+        msg = cc.angry(config["tnrky"], str(message.author))
 
     if (msg != ""): await message.channel.send(msg)
 

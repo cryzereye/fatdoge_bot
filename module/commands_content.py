@@ -1,6 +1,7 @@
 from genericpath import exists
 from http.client import ResponseNotReady
 import json, requests
+import math
 from posixpath import split
 from pickle import TRUE
 import random as rand
@@ -32,6 +33,15 @@ with open("json\\mooncycle.json", "r") as moon_file:
     moonData = json.load(moon_file)
     moon_file.close()
 
+def angry(key, user):
+    util.logger(str(user) + " is angry!!!!")
+    r = requests.get(
+    "https://g.tenor.com/v1/random?q=angry&key=%s&limit=%s&locale=en_US&media_filter=minimal&contentfilter=medium" % (key, 1))
+
+    if r.status_code == 200:
+        return r.json()["results"][0]["media"][0]["gif"]["url"]
+    else:
+        return None
 
 def spot(pair, k, s, user):
     util.logger(str(user) + " used spot for " + pair)
