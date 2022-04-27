@@ -33,7 +33,8 @@ with open("json\\mooncycle.json", "r") as moon_file:
     moon_file.close()
 
 
-def spot(pair, k, s):
+def spot(pair, k, s, user):
+    util.logger(str(user) + " used spot for " + pair)
     bin_client = Spot(key=k, secret=s)
     s = "```From Binance Spot:\n\n"
     if str.lower(pair) == "all":
@@ -54,7 +55,8 @@ def spot(pair, k, s):
     return s + "```"
 
 
-def fx():
+def fx(user):
+    util.logger(str(user) + " used fx")
     response = requests.get(FIXERIOFXAPI_URL) 
     s = ("```"
     "from: data.fixer.io/api\n\n"
@@ -77,7 +79,8 @@ def p2pnotify(user, msg):
         return "Invalid p2p notify command! Please check rate inputted!"
     
 # returns 1 Binance P2P USDT/PHP result with the lowest buying rate
-def p2p(tradeType, payMethod):
+def p2p(tradeType, payMethod, user):
+    util.logger(str(user) + " used p2p for " + tradeType)
     data = {
         "asset": "USDT",
         "fiat": "PHP",
@@ -129,7 +132,8 @@ def p2p(tradeType, payMethod):
 
 # return next new moon and full moon dates
 # from manual list fetched from "https://www.timeanddate.com/moon/phases/@220244"
-def whenmoon():
+def whenmoon(user):
+    util.logger(str(user) + " used whenmoon")
     currentDate = datetime.today()
     fullMoonSTR = ""
     newMoonSTR = ""
@@ -332,12 +336,15 @@ def help(user):
     util.logger(str(user) + " queried help")
     s = ("```AVAILABLE COMMANDS:\n"
             "only in #bot-spam and #crypto:\n"
-            "seggs\n"
-            "^lb <seggs>\n"
-            "^wr\n"
-            "^p <coin1> <coin2(optional)>\n\n"
+            "^spot [binance pairing ex: BTCUSDT]\n"
+            "^fx\n"
+            "^p2p [buy|sell [gcash|ubop|bank|ing|others...]]\n"
+            "^price <coin1> <coin2(optional)>\n\n"
             "only in #degeneral:\n"
-            "^gagofy"            
+            "^gagofy"
+            "\n\n"
+            "required = ()\n"
+            "optional = []\n"
             "```"
         )
     return s

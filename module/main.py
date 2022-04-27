@@ -49,37 +49,37 @@ async def on_message(message):
                 options = message.content.split(" ")[1]
             except:
                 options = "all"
-            msg = cc.spot(options, config["bikey"], config["s"])
-        elif message.content.startswith(command_prefix +'lb'): 
-            msg = cc.leaderboard(str(message.author), message.content)
-        elif message.content.startswith(command_prefix +'winrate') or message.content.startswith(command_prefix +'wr'): 
-            msg = cc.winrate(str(message.author))
+            msg = cc.spot(options, config["bikey"], config["s"], str(message.author))
+        #elif message.content.startswith(command_prefix +'lb'): 
+        #    msg = cc.leaderboard(str(message.author), message.content)
+        #elif message.content.startswith(command_prefix +'winrate') or message.content.startswith(command_prefix +'wr'): 
+        #    msg = cc.winrate(str(message.author))
         #elif str("bepis") in lowerMSG: 
         #    msg = cc.bepisMonke(str(message.author))
-        elif str("seggs") in lowerMSG: 
-            msg = cc.seggs(str(message.author))
+        #elif str("seggs") in lowerMSG: 
+        #    msg = cc.seggs(str(message.author))
         elif message.content.startswith(command_prefix +'whenmoon'):
-            msg = cc.whenmoon()
+            msg = cc.whenmoon(str(message.author))
         elif message.content.startswith(command_prefix +'p2p'):
             if message.content.startswith(command_prefix +'p2p notify'):
                 msg = cc.p2pnotify(str(message.author.id), message.content)
             elif message.content.startswith(command_prefix +'p2p buy'): # dirty fast workaround below
                 try:
-                    msg = cc.p2p('BUY', message.content.split(" ")[2])
+                    msg = cc.p2p('BUY', message.content.split(" ")[2], str(message.author))
                 except:
-                    msg = cc.p2p('BUY', "")
+                    msg = cc.p2p('BUY', "", str(message.author))
             elif message.content.startswith(command_prefix +'p2p sell'):
                 try:
-                    msg = cc.p2p('SELL', message.content.split(" ")[2])
+                    msg = cc.p2p('SELL', message.content.split(" ")[2], str(message.author))
                 except:
-                    msg = cc.p2p('SELL', "")
+                    msg = cc.p2p('SELL', "", str(message.author))
             else:
                 try:
-                    msg = cc.p2p('BUY', message.content.split(" ")[1])
+                    msg = cc.p2p('BUY', message.content.split(" ")[1], str(message.author))
                 except:
-                    msg = cc.p2p('BUY',"")
+                    msg = cc.p2p('BUY',"", str(message.author))
         elif message.content.startswith(command_prefix +'fx'):
-            msg = cc.fx()
+            msg = cc.fx(str(message.author))
     
     if message.content.startswith(command_prefix + 'gagofy') and message.channel.id == 806838914806710282:
         msg = cc.gagofy(str(message.author))
