@@ -24,6 +24,8 @@ def logger(message):
     f.write(ts_string + "  ---  " + message + "\n")
     f.close()
 
+def loadConfig():
+    return loadJsonFile("json\\config.json", "r")
 
 # crypto() functions
 def getCoinID(arg, coins):
