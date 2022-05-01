@@ -147,18 +147,25 @@ def whenmoon(user):
     newMoonSTR = ""
 
     for x in moonData["fullmoons"]:
+        prevFullMoon = loopDate
         loopDate = datetime.strptime(x, '%d/%m/%Y')
         if currentDate < loopDate:
             fullMoonSTR = datetime.strftime(loopDate, '%B %d %Y')
             break
     
     for x in moonData["newmoons"]:
+        prevNewMoon = loopDate
         loopDate = datetime.strptime(x, '%d/%m/%Y')
         if currentDate < loopDate:
             newMoonSTR = datetime.strftime(loopDate, '%B %d %Y')
             break
-
-    return "```Next FULL moon:  " + fullMoonSTR + "\nNext NEW moon:   " + newMoonSTR + "```"
+    s = ("```"
+    "\nPrev FULL moon:  " + prevFullMoon +""
+    "\nNext FULL moon:  " + fullMoonSTR +""
+    "\nPrev NEW moon:   " + prevNewMoon +""
+    "\nNext NEW moon:   " + newMoonSTR
+    "```")
+    return s
 
 # CoinGeckoAPI can only show rates against USD
 # had to make a workaround for token-token rates
