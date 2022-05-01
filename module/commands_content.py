@@ -143,27 +143,28 @@ def p2p(tradeType, payMethod, user):
 def whenmoon(user):
     util.logger(str(user) + " used whenmoon")
     currentDate = datetime.today()
+    loopDate = currentDate
     fullMoonSTR = ""
     newMoonSTR = ""
 
     for x in moonData["fullmoons"]:
-        prevFullMoon = loopDate
+        prevFullMoon = datetime.strftime(loopDate, '%B %d %Y')
         loopDate = datetime.strptime(x, '%d/%m/%Y')
         if currentDate < loopDate:
             fullMoonSTR = datetime.strftime(loopDate, '%B %d %Y')
             break
     
     for x in moonData["newmoons"]:
-        prevNewMoon = loopDate
+        prevNewMoon = datetime.strftime(loopDate, '%B %d %Y')
         loopDate = datetime.strptime(x, '%d/%m/%Y')
         if currentDate < loopDate:
             newMoonSTR = datetime.strftime(loopDate, '%B %d %Y')
             break
-    s = ("```"
-    "\nPrev FULL moon:  " + prevFullMoon +""
-    "\nNext FULL moon:  " + fullMoonSTR +""
-    "\nPrev NEW moon:   " + prevNewMoon +""
-    "\nNext NEW moon:   " + newMoonSTR
+    s = ("```" +
+    "\nPrev FULL moon:  " + prevFullMoon +
+    "\nNext FULL moon:  " + fullMoonSTR +
+    "\nPrev NEW moon:   " + prevNewMoon +
+    "\nNext NEW moon:   " + newMoonSTR +
     "```")
     return s
 
