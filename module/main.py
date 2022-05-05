@@ -34,8 +34,12 @@ async def on_ready():
 @client.event
 async def on_message(message):
     msg = ""
-    if message.author == client.user:
+    if message.author == client.user: #filter out bot messages
         return
+
+    # all channels
+    if message.content.startswith(command_prefix + 'help'):
+            msg = cc.help(str(message.author))
 
     if message.channel.id in config["allowed_channels"]:
         lowerMSG = message.content.lower()
@@ -82,15 +86,14 @@ async def on_message(message):
         elif message.content.startswith(command_prefix +'fx'):
             msg = cc.fx(str(message.author))
 
-    
-    if message.content.startswith(command_prefix + 'gagofy') and message.channel.id == 806838914806710282:
-        msg = cc.gagofy(str(message.author))
-    elif message.content.startswith(command_prefix + 'help'):
-        msg = cc.help(str(message.author))
-    elif message.content.startswith(command_prefix +'angry'):
-        msg = cc.angry(config["tnrky"], str(message.author))
-    elif message.content.startswith(command_prefix +'kilig'):
-        msg = cc.kilig(config["tnrky"], str(message.author))
+    # for RMI degeneral only
+    if message.channel.id == 806838914806710282:
+        if message.content.startswith(command_prefix + 'gagofy'):
+            msg = cc.gagofy(str(message.author))
+        elif message.content.startswith(command_prefix +'angry'):
+            msg = cc.angry(config["tnrky"], str(message.author))
+        elif message.content.startswith(command_prefix +'kilig'):
+            msg = cc.kilig(config["tnrky"], str(message.author))
 
     if (msg != ""): await message.channel.send(msg)
 
