@@ -89,6 +89,8 @@ async def on_message(message):
         msg = cc.help(str(message.author))
     elif message.content.startswith(command_prefix +'angry'):
         msg = cc.angry(config["tnrky"], str(message.author))
+    elif message.content.startswith(command_prefix +'kilig'):
+        msg = cc.kilig(config["tnrky"], str(message.author))
 
     if (msg != ""): await message.channel.send(msg)
 

@@ -41,6 +41,16 @@ def angry(key, user):
     else:
         return None
 
+def kilig(key, user):
+    util.logger(str(user) + " feels kilig <3!")
+    r = requests.get(
+    "https://g.tenor.com/v1/random?q=kilig&key=%s&limit=%s&locale=en_US&media_filter=minimal&contentfilter=medium" % (key, 1))
+
+    if r.status_code == 200:
+        return r.json()["results"][0]["media"][0]["gif"]["url"]
+    else:
+        return None
+
 def spot(pair, k, s, user):
     util.logger(str(user) + " used spot for " + pair)
     bin_client = Spot(key=k, secret=s)
