@@ -85,13 +85,23 @@ async def on_message(message):
                     msg = cc.p2p('BUY',"", str(message.author))
         elif message.content.startswith(command_prefix +'fx'):
             msg = cc.fx(str(message.author))
+        elif message.content.startswith(command_prefix +'gspot'):
+            msg = cc.persy(message.author)
+        elif message.content.startswith(command_prefix +'echo'):
+            try:
+                msg = cc.echo(str(message.author), message.content.split(" ")[1])
+            except:
+                msg = cc.echo(str(message.author), "")
 
     # for RMI degeneral only
     if message.channel.id == 806838914806710282:
         if message.content.startswith(command_prefix + 'gagofy'):
             msg = cc.gagofy(str(message.author))
-        elif message.content.startswith(command_prefix +'angry'):
-            msg = cc.angry(config["tnrky"], str(message.author))
+        elif message.content.startswith(command_prefix +'tenor'):
+            try: 
+                msg = cc.tenor(config["tnrky"], str(message.author), message.content.split(" ")[1])
+            except:
+                msg = cc.tenor(config["tnrky"], str(message.author), "confused")
         elif message.content.startswith(command_prefix +'kilig'):
             msg = cc.kilig(config["tnrky"], str(message.author))
 

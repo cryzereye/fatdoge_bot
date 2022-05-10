@@ -31,20 +31,19 @@ with open("json\\mooncycle.json", "r") as moon_file:
     moonData = json.load(moon_file)
     moon_file.close()
 
-def angry(key, user):
-    util.logger(str(user) + " is angry!!!!")
-    r = requests.get(
-    "https://g.tenor.com/v1/random?q=angry&key=%s&limit=%s&locale=en_US&media_filter=minimal&contentfilter=medium" % (key, 1))
+def echo(user, channel):
+    util.logger(str(user) + " used echo")
+    print ("" + str(channel))
+    return ""
 
-    if r.status_code == 200:
-        return r.json()["results"][0]["media"][0]["gif"]["url"]
-    else:
-        return None
+def persy(user):
+    util.logger(str(user) + " used gspot")
+    return "pakyu " + user.mention + " wag kang bastos >:("
 
-def kilig(key, user):
-    util.logger(str(user) + " feels kilig <3!")
+def tenor(key, user, s):
+    util.logger(str(user) + " used tenor for " + s)
     r = requests.get(
-    "https://g.tenor.com/v1/random?q=kilig&key=%s&limit=%s&locale=en_US&media_filter=minimal&contentfilter=medium" % (key, 1))
+    "https://g.tenor.com/v1/random?q=%s&key=%s&limit=%s&locale=en_US&media_filter=minimal&contentfilter=medium" % (s, key, 1))
 
     if r.status_code == 200:
         return r.json()["results"][0]["media"][0]["gif"]["url"]
@@ -211,152 +210,6 @@ def crypto(cg, args, user):
     except:
         return "```Input a valid token!```"
     return s + "```"
-
-
-# gacha game to monke bepis
-def bepisMonke(user):
-    result = ""
-    record = {}
-    num = rand.randint(0,1000)
-    appendRecord = False
-
-    try:
-        record = list(filter(lambda x:x["user"]==user,bepisLB))[0]
-        print(record)
-        if record == []:
-            raise ValueError
-    except:
-        print("New player " + user)
-        record = {
-            "user" : user,
-            "tries" : 0,
-            "wins" : 0
-        }
-        appendRecord = True
-
-    record["tries"] += 1
-    
-    util.logger(user + " rolled " + str(num) + " in bepisMonke")
-
-    if num < 69:
-        space = int(num/2) * " "
-        result =  "||" + space + "bepis monke" + space + "||"
-        record["wins"] += 1
-    elif num == 69:
-        result = "|| https://imgur.com/e54X8Pu ||" 
-        record["wins"] += 1
-
-    if appendRecord:
-        bepisLB.append(record)
-    with open("bepisLB.json", "w") as bepisLB_file:
-        json.dump(bepisLB, bepisLB_file)
-        bepisLB_file.close()
-
-    return result
-
-# gacha game for seggs
-def seggs(user):
-    result = ""
-    record = {}
-    num = rand.randint(0,1000)
-    appendRecord = False
-
-    try:
-        record = list(filter(lambda x:x["user"]==user,seggsLB))[0]
-        print(record)
-        if record == []:
-            raise ValueError
-    except:
-        print("New player " + user)
-        record = {
-            "user" : user,
-            "tries" : 0,
-            "wins" : 0
-        }
-        appendRecord = True
-
-    record["tries"] += 1
-
-    util.logger(str(user) + " rolled " + str(num) + " in seggs")
-
-    if num < 43:
-        record["wins"] += 1
-        result = "https://imgur.com/cZNc7Pl"
-
-    if appendRecord:
-        seggsLB.append(record)
-    with open("seggsLB.json", "w") as seggsLB_file:
-        json.dump(seggsLB, seggsLB_file)
-        seggsLB_file.close()
-
-    return result
-
-
-def winrate(user):
-    util.logger(str(user) + " queried winrate")
-    recordB = {}
-    recordS = {}
-    returnMsg = "```Winrates for " + user + "\n"
-    #try:
-    #    recordB = list(filter(lambda x:x["user"]==user,bepisLB))[0]
-    #    if recordB == []:
-    #        raise ValueError
-    #    winRateB = recordB["wins"]/recordB["tries"]* 100
-    #    winRateB_str = "{:.2f}".format(winRateB)
-    #    returnMsg = returnMsg + "bepis:   " + str(recordB["tries"]) + "/" + str(recordB["wins"]) + "(" + str(winRateB_str) + "%)\n"
-    #except:
-    #    returnMsg = returnMsg + "Haven't played bepis gacha\n"
-    try:
-        recordS = list(filter(lambda x:x["user"]==user,seggsLB))[0]
-        if recordS == []:
-            raise ValueError
-        winRateS = recordS["wins"]/recordS["tries"]* 100
-        winRateS_str = "{:.2f}".format(winRateS)
-        returnMsg = returnMsg + "seggs:   " + str(recordS["tries"]) + "/" + str(recordS["wins"]) + "(" + str(winRateS_str) + "%)\n"
-    except:
-        returnMsg = returnMsg + "Haven't played seggs gacha\n"
-
-    return returnMsg + "```"
-
-
-def leaderboard(user, msg):
-    record = []
-
-    try:
-        list = msg.split(" ")
-        game = list[1]
-        if game not in ("seggs", "seggs"):
-            raise ValueError
-    except:
-        util.logger(str(user) + " asked for LB of an invalid game: " + msg)
-        return "```Game not found!```"
-    util.logger(str(user) + " asked for LB of " + game)
-
-
-    returnMsg = "```LEADERBOARD FOR "+ game +"\n\nUser\t\t\t\t\t\t\t\t\t|  Winrate  |  Tries  |  Wins  |\n"
-    try:
-        #if game == "bepis":
-        #    record = sorted(bepisLB, key=lambda item: item["wins"]/item["tries"]*100, reverse=True)
-        if game == "seggs":
-            record = sorted(seggsLB, key=lambda item: item["wins"]/item["tries"]*100, reverse=True)
-            if record == []:
-                raise ValueError
-    except:
-        return "```No leaderboard for " + game + " game```"
-
-    ctr = 0
-    for x in record:
-        winrate = "{:05.2f}".format(x["wins"]/x["tries"]*100)
-        winrateStr = winrate + int(7 - len(winrate)) * " "
-        tries = str(x["tries"]) + int(7 - len(str(x["tries"]))) * " "
-        wins = str(x["wins"]) + int(6 - len(str(x["wins"]))) * " "
-        returnMsg = returnMsg + x["user"] + str(int(40 - len(x["user"])) * " ") + "|  " + winrateStr + "  |  " + tries + "|  " + wins + "|\n"
-        ctr+=1
-        if ctr == 5: break
-
-
-    returnMsg = returnMsg + "```"
-    return returnMsg
 
 def help(user):
     util.logger(str(user) + " queried help")
