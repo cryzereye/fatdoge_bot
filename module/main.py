@@ -55,14 +55,6 @@ async def on_message(message):
             except:
                 options = "all"
             msg = cc.spot(options, config["bikey"], config["s"], str(message.author))
-        #elif message.content.startswith(command_prefix +'lb'): 
-        #    msg = cc.leaderboard(str(message.author), message.content)
-        #elif message.content.startswith(command_prefix +'winrate') or message.content.startswith(command_prefix +'wr'): 
-        #    msg = cc.winrate(str(message.author))
-        #elif str("bepis") in lowerMSG: 
-        #    msg = cc.bepisMonke(str(message.author))
-        #elif str("seggs") in lowerMSG: 
-        #    msg = cc.seggs(str(message.author))
         elif message.content.startswith(command_prefix +'whenmoon'):
             msg = cc.whenmoon(str(message.author))
         elif message.content.startswith(command_prefix +'p2p'):
@@ -102,8 +94,6 @@ async def on_message(message):
                 msg = cc.tenor(config["tnrky"], str(message.author), message.content.split(" ")[1])
             except:
                 msg = cc.tenor(config["tnrky"], str(message.author), "confused")
-        elif message.content.startswith(command_prefix +'kilig'):
-            msg = cc.kilig(config["tnrky"], str(message.author))
 
     if (msg != ""): await message.channel.send(msg)
 
