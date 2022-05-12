@@ -44,10 +44,6 @@ def gwei(user, cfg):
         else:
             s += cfg[x]["name"] + "Gas prices not available"
     return s + "```"
-    
-def vouch (source, target, channel):
-    channel
-    return ""
 
 def echo(user, channel):
     util.logger(str(user) + " used echo")
