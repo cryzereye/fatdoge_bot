@@ -85,7 +85,7 @@ async def on_message(message):
             except:
                 msg = cc.echo(str(message.author), "")
         elif message.content.startswith(command_prefix +'gwei'):
-            msg = cc.gwei(str(message.author), config["ethscan"])
+            msg = cc.gwei(str(message.author), config["gwei"])
 
     # for RMI degeneral only
     if message.channel.id == 806838914806710282:

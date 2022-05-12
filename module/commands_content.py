@@ -31,18 +31,19 @@ with open("json\\mooncycle.json", "r") as moon_file:
     moonData = json.load(moon_file)
     moon_file.close()
 
-def gwei(user, key):
-    r = requests.get(
-    "https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=" + key)
-    if r.status_code == 200:
-        return ("```"
-        "From Etherscan.io:\n\n"
-        "Low :\t" + r.json()["result"]["SafeGasPrice"] + "\n"
-        "Ave :\t" + r.json()["result"]["ProposeGasPrice"] + "\n"
-        "High:\t" + r.json()["result"]["FastGasPrice"] + "\n"
-        "```")
-    else:
-        return "```Gas prices not available```"
+def gwei(user, cfg):
+    s = "```"
+    for x in range(0, len(cfg)):
+        r = requests.get(
+        "https://api." + str(cfg[x]["name"]) + "scan."+ str(cfg[x]["suffix"]) +"/api?module=gastracker&action=gasoracle&apikey=" + str(cfg[x]["key"]))
+        if r.status_code == 200:
+            s += ("From "+ str(cfg[x]["name"]).capitalize() +"scan."+str(cfg[x]["suffix"])+":\n\n"
+            "Low :\t" + r.json()["result"]["SafeGasPrice"] + "\n"
+            "Ave :\t" + r.json()["result"]["ProposeGasPrice"] + "\n"
+            "High:\t" + r.json()["result"]["FastGasPrice"] + "\n\n\n")
+        else:
+            s += cfg[x]["name"] + "Gas prices not available"
+    return s + "```"
 
 def echo(user, channel):
     util.logger(str(user) + " used echo")
