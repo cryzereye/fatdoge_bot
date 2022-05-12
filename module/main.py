@@ -51,9 +51,9 @@ async def on_message(message):
             return
         elif message.content.startswith(command_prefix +'spot'):
             try:
-                options = message.content.split(" ")[1]
+                options = str.upper(message.content.split(" ")[1])
             except:
-                options = "all"
+                options = "ALL"
             msg = cc.spot(options, config["bikey"], config["s"], str(message.author))
         elif message.content.startswith(command_prefix +'whenmoon'):
             msg = cc.whenmoon(str(message.author))

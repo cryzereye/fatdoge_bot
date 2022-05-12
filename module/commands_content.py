@@ -68,7 +68,7 @@ def spot(pair, k, s, user):
     util.logger(str(user) + " used spot for " + pair)
     bin_client = Spot(key=k, secret=s)
     s = "```From Binance Spot:\n\n"
-    if str.lower(pair) == "all":
+    if str(pair) == "ALL":
         watchlist = [
             "BTCUSDT",
             "ETHUSDT",
