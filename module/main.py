@@ -36,13 +36,12 @@ async def on_message(message):
     msg = ""
     if message.author == client.user: #filter out bot messages
         return
-
+    lowerMSG = message.content.lower()
     # all channels
     if message.content.startswith(command_prefix + 'help'):
             msg = cc.help(str(message.author))
-
+              
     if message.channel.id in config["allowed_channels"]:
-        lowerMSG = message.content.lower()
         options = ""
         if message.content.startswith(command_prefix + 'price'):
             waitMsg = await message.channel.send("```Awaiting " + message.content + " response...```")

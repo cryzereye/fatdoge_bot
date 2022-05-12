@@ -30,3 +30,6 @@ def loadConfig():
 # crypto() functions
 def getCoinID(arg, coins):
     return list(filter(lambda x:x["symbol"]==arg,coins))
+
+def fetchAllData(channel_id):
+    return "```fetch done```"

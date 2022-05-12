@@ -44,6 +44,10 @@ def gwei(user, cfg):
         else:
             s += cfg[x]["name"] + "Gas prices not available"
     return s + "```"
+    
+def vouch (source, target, channel):
+    channel
+    return ""
 
 def echo(user, channel):
     util.logger(str(user) + " used echo")
@@ -73,7 +77,8 @@ def spot(pair, k, s, user):
             "BTCUSDT",
             "ETHUSDT",
             "LRCUSDT",
-            "ADAUSDT"
+            "ADAUSDT",
+            "LUNAUSDT"
         ]
         
         for x in range(0, len(watchlist)):
@@ -220,7 +225,8 @@ def crypto(cg, args, user):
                         pass
                 s += ""+ coin1_ID + "/" + coin2_ID + "  " + coin1.upper() + "/" + coin2.upper() + " : " + str(result[coin1_ID]['usd']/result2[coin2_ID]['usd'])
 
-            s += "" + coin1_ID + "  " + coin1.upper() + "/USD : " + str(result[coin1_ID]['usd'])
+            else:
+                s += "" + coin1_ID + "  " + coin1.upper() + "/USD : " + str(result[coin1_ID]['usd'])
     except:
         return "```Input a valid token!```"
     return s + "```"
