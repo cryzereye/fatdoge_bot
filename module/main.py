@@ -36,13 +36,30 @@ async def on_message(message):
     msg = ""
     if message.author == client.user: #filter out bot messages
         return
-
+    lowerMSG = message.content.lower()
     # all channels
     if message.content.startswith(command_prefix + 'help'):
             msg = cc.help(str(message.author))
 
+    #if message.channel.id in [config["keebi_vouch"], config["test_channel"]]:
+     #   if message.content.startswith(command_prefix +'vouch'):
+    #        try:
+    #            if str(message.mentions[0]) == message.content.split(" ")[1]:
+    #                msg = cc.vouch(str(message.author), str(message.mentions[0]), client.get_channel(config["keebi_vouch"]))
+    #        except:
+    #            msg = "```Invalid vouch input. Please mention the user that you want to check```"
+    #elif message.channel.id in [config["keebi_vrfytrn"], config["test_channel"]]:
+    #    if message.content.startswith(command_prefix +'vouch'):
+    #        try:
+     #           option = message.content.split(" ")[1]
+     #           if option == "fetchall" and str(message.author) == config["me_id"]:
+     #               msg = util.fetchAllData(client.get_channel(config["keebi_vrfytrn"]))
+      #          else:
+     #               raise Exception
+     #       except:
+    #            msg = "vouch command is only available in <#" + str(config["keebi_vouch"]) + ">"
+        
     if message.channel.id in config["allowed_channels"]:
-        lowerMSG = message.content.lower()
         options = ""
         if message.content.startswith(command_prefix + 'price'):
             waitMsg = await message.channel.send("```Awaiting " + message.content + " response...```")
@@ -84,10 +101,7 @@ async def on_message(message):
                 msg = cc.echo(str(message.author), message.content.split(" ")[1])
             except:
                 msg = cc.echo(str(message.author), "")
-
-    # for RMI degeneral only
-    if message.channel.id == 806838914806710282:
-        if message.content.startswith(command_prefix + 'gagofy'):
+        elif message.content.startswith(command_prefix + 'gagofy'):
             msg = cc.gagofy(str(message.author))
         elif message.content.startswith(command_prefix +'tenor'):
             try: 
