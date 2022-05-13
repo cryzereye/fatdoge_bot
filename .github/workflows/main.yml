@@ -6,28 +6,34 @@ jobs:
   sync_branches:
     runs-on: ubuntu-latest
     steps:
-      - name: state step
-        run: echo 'Merging main commits to gwei branch'
-      - name: git merging
-        run: |
+      - name: gwei merge
+      - uses: actions/checkout@v3
+        with:
+          ref: gwei
+      - run: |
+          echo 'Merging main commits to gwei branch'
           git switch gwei
           git merge main
           git commit -m "updated gwei with main commits"
           git push origin gwei
           
-      - name: state step
-        run: echo 'Merging main commits to vouch branch'
-      - name: git merging
-        run: |
+      - name: vouch merge
+      - uses: actions/checkout@v3
+        with:
+          ref: vouch
+      - run: |
+          echo 'Merging main commits to vouch branch'
           git switch vouch
           git merge main
           git commit -m "updated vouch with main commits"
           git push origin vouch
           
-      - name: state step
-        run: echo 'Merging main commits to classes branch'
-      - name: git merging
-        run: |
+      - name: classes merge
+      - uses: actions/checkout@v3
+        with:
+          ref: classes
+      - run: |
+          echo 'Merging main commits to classes branch'
           git switch classes
           git merge main
           git commit -m "updated classes with main commits"
