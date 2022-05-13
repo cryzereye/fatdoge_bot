@@ -6,7 +6,6 @@ jobs:
   sync_branches:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@gwei
       - name: state step
         run: echo 'Merging main commits to gwei branch'
       - name: git merging
@@ -16,7 +15,6 @@ jobs:
           git commit -m "updated gwei with main commits"
           git push origin gwei
           
-      - uses: actions/checkout@vouch
       - name: state step
         run: echo 'Merging main commits to vouch branch'
       - name: git merging
@@ -26,7 +24,6 @@ jobs:
           git commit -m "updated vouch with main commits"
           git push origin vouch
           
-      - uses: actions/checkout@classes
       - name: state step
         run: echo 'Merging main commits to classes branch'
       - name: git merging
