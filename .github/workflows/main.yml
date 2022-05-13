@@ -3,10 +3,9 @@ on:
   push:
     branches: [ main ]
 jobs:
-  sync_branches:
+  sync_gwei:
     runs-on: ubuntu-latest
     steps:
-      - name: gwei merge
       - uses: actions/checkout@v3
         with:
           ref: gwei
@@ -16,8 +15,9 @@ jobs:
           git merge main
           git commit -m "updated gwei with main commits"
           git push origin gwei
-          
-      - name: vouch merge
+  sync_vouch:
+    runs-on: ubuntu-latest
+    steps:
       - uses: actions/checkout@v3
         with:
           ref: vouch
@@ -28,7 +28,9 @@ jobs:
           git commit -m "updated vouch with main commits"
           git push origin vouch
           
-      - name: classes merge
+  sync_classes:
+    runs-on: ubuntu-latest
+    steps:
       - uses: actions/checkout@v3
         with:
           ref: classes
