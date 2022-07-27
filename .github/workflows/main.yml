@@ -3,40 +3,13 @@ on:
   push:
     branches: [ main ]
 jobs:
-  sync_gwei:
+  sync_branches:
+    strategy:
+      matrix:
+        branch: [gwei, classes, vouch, dashboard]
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: gwei
-      - run: |
-          echo 'Merging main commits to gwei branch'
-          git switch gwei
-          git merge main
-          git commit -m "updated gwei with main commits"
-          git push origin gwei
-  sync_vouch:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: vouch
-      - run: |
-          echo 'Merging main commits to vouch branch'
-          git switch vouch
-          git merge main
-          git commit -m "updated vouch with main commits"
-          git push origin vouch
-          
-  sync_classes:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: classes
-      - run: |
-          echo 'Merging main commits to classes branch'
-          git switch classes
-          git merge main
-          git commit -m "updated classes with main commits"
-          git push origin classes
+    steps: 
+      - run:
+        git switch ${{matrix.branch}}
+        git pull
+        git push ${{matrix.branch}}
