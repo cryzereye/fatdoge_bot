@@ -1,0 +1,15 @@
+name: fatdoge_ci
+on:
+  push:
+    branches: [ main ]
+jobs:
+  sync_branches:
+    strategy:
+      matrix:
+        branch: [gwei, classes, vouch, dashboard]
+    runs-on: ubuntu-latest
+    steps: 
+      - run:
+        git switch ${{matrix.branch}}
+        git pull
+        git push ${{matrix.branch}}
