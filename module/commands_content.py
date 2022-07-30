@@ -74,7 +74,8 @@ def spot(pair, k, s, user):
             "ETHUSDT",
             "LRCUSDT",
             "ADAUSDT",
-            "LUNAUSDT"
+            "LUNABUSD",
+            "IMXUSDT"
         ]
         
         for x in range(0, len(watchlist)):
@@ -147,7 +148,7 @@ def p2p(tradeType, payMethod, user):
     for x in r_data["data"]:
         payMethods = ""
         for y in r_data["data"][i]["adv"]["tradeMethods"]:
-            payMethods += str(y["payType"]) + " "
+            payMethods += str(y["identifier"]) + " "
 
         s += (
             "Binance P2P PHP/USDT:   " + str(r_data["data"][i]["adv"]["price"]) + "\n"
