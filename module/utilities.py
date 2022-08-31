@@ -1,6 +1,7 @@
 from datetime import datetime
 import os
 import json
+from collections import OrderedDict
 
 if not os.path.exists('logs'):
     os.makedirs('logs')
@@ -33,3 +34,13 @@ def getCoinID(arg, coins):
 
 def fetchAllData(channel_id):
     return "```fetch done```"
+
+def saveJSONdata(data, filename):
+    with open(filename + ".json", "w") as outfile:
+        outfile.write(json.dumps(data))
+
+def sortJSONdata(data):
+    sorted(data.items(), key=lambda x: x[1]/x[2], reverse=True)
+    return data
+
+

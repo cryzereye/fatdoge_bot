@@ -31,6 +31,10 @@ with open("json\\mooncycle.json", "r") as moon_file:
     moonData = json.load(moon_file)
     moon_file.close()
 
+with open("json\\pp.json", "r") as pp_file:
+    ppData = json.load(pp_file)
+    pp_file.close() 
+
 def gwei(user, cfg):
     s = "```"
     for x in range(0, len(cfg)):
@@ -252,14 +256,37 @@ def gagofy(user):
     randNum = rand.randint(0, length - 1)
     return gagofyData["statements"][randNum]
 
-def pp(mentions):
+def pp(user, mentions):
+    util.logger(str(user) + " queried plz pp")
     randNum = 0
     if(len(mentions) > 0):
         ret = ""
         for x in mentions:
             randNum = rand.randint(0, 20)
+            savePPdata(x, randNum)
+            util.logger(str(user) + "queried plz pp for" + str(x))
             ret += "<@" + str(x.id) + ">'s pp:\n"  + ("8" + ("=" * randNum) + "D") + "\n\n"
         return ret
     else:
         randNum = rand.randint(0, 20)
+        savePPdata(user, randNum)
         return ("8" + ("=" * randNum) + "D")
+
+def savePPdata(user, num):
+    util.logger(str(user) + " pp data saved")
+    if(str(user) in ppData):
+        ppData[str(user)]["total"] += num
+        ppData[str(user)]["tries"] += 1
+    else:
+        ppData[str(user)] = {
+            "total" : num,
+            "tries" : 1
+        }
+    util.saveJSONdata(ppData, "json/pp")
+
+def pplb():
+    sortedPP = sorted(ppData.items(), key=lambda x: x[1]["total"]/x[1]["tries"], reverse=True)
+    ret = "```** AVERAGE PP LENGTHS **\n\n"
+    for data in sortedPP:
+        ret += "" + data[0] + " : " + "8" + ("=" * int(data[1]["total"]/data[1]["tries"])) + "D\n"
+    return ret + "```"
