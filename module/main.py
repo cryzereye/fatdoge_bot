@@ -43,7 +43,9 @@ async def on_message(message):
               
     if message.channel.id in config["allowed_channels"]:
         options = ""
-        if message.content.startswith(command_prefix + 'pplb'):
+        if message.content.startswith(command_prefix + 'jutslb'):
+            await message.reply(cc.jutslb())
+        elif message.content.startswith(command_prefix + 'pplb'):
             await message.reply(cc.pplb())
         elif(message.content.lower().startswith('plz pp')):
             await message.reply(cc.pp(message.author, message.mentions))
