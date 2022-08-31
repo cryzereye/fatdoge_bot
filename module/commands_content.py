@@ -252,6 +252,14 @@ def gagofy(user):
     randNum = rand.randint(0, length - 1)
     return gagofyData["statements"][randNum]
 
-def pp():
-    randNum = rand.randint(0, 20)
-    return ("8" + ("=" * randNum) + "D")
+def pp(mentions):
+    randNum = 0
+    if(len(mentions) > 0):
+        ret = ""
+        for x in mentions:
+            randNum = rand.randint(0, 20)
+            ret += "<@" + str(x.id) + ">'s pp: "  + ("8" + ("=" * randNum) + "D") + "\n\n"
+        return ret
+    else:
+        randNum = rand.randint(0, 20)
+        return ("8" + ("=" * randNum) + "D")
