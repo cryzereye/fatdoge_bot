@@ -258,19 +258,18 @@ def gagofy(user):
 
 def pp(user, mentions):
     util.logger(str(user) + " queried plz pp")
-    randNum = 0
-    if(len(mentions) > 0):
-        ret = ""
-        for x in mentions:
-            randNum = rand.randint(0, 20)
-            savePPdata(x, randNum)
-            util.logger(str(user) + "queried plz pp for" + str(x))
-            ret += "<@" + str(x.id) + ">'s pp:\n"  + ("8" + ("=" * randNum) + "D") + "\n\n"
-        return ret
-    else:
+
+    randNum = rand.randint(0, 20)
+    savePPdata(user, randNum)
+    ret = "<@" + str(user.id) + ">'s pp:\n"  + ("8" + ("=" * randNum) + "D") + "\n\n"
+
+    for x in mentions:
         randNum = rand.randint(0, 20)
-        savePPdata(user, randNum)
-        return ("8" + ("=" * randNum) + "D")
+        savePPdata(x, randNum)
+        util.logger(str(user) + "queried plz pp for" + str(x))
+        ret += "<@" + str(x.id) + ">'s pp:\n"  + ("8" + ("=" * randNum) + "D") + "\n\n"
+
+    return ret
 
 def savePPdata(user, num):
     util.logger(str(user) + " pp data saved")
