@@ -251,3 +251,7 @@ def gagofy(user):
     length = len(gagofyData["statements"])
     randNum = rand.randint(0, length - 1)
     return gagofyData["statements"][randNum]
+
+def pp():
+    randNum = rand.randint(0, 20)
+    return ("8" + ("=" * randNum) + "D")

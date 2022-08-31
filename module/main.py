@@ -43,7 +43,9 @@ async def on_message(message):
               
     if message.channel.id in config["allowed_channels"]:
         options = ""
-        if message.content.startswith(command_prefix + 'price'):
+        if(message.content.lower().startswith('plz pp')):
+            await message.reply(cc.pp())
+        elif message.content.startswith(command_prefix + 'price'):
             waitMsg = await message.channel.send("```Awaiting " + message.content + " response...```")
             msg = cc.crypto(cg , message.content, str(message.author))
             await waitMsg.edit(content = msg)
