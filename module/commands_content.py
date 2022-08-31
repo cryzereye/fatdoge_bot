@@ -285,8 +285,12 @@ def savePPdata(user, num):
     util.saveJSONdata(ppData, "json/pp")
 
 def pplb():
+    count = 0
     sortedPP = sorted(ppData.items(), key=lambda x: x[1]["total"]/x[1]["tries"], reverse=True)
     ret = "```** AVERAGE PP LENGTHS **\n\n"
     for data in sortedPP:
-        ret += "" + data[0] + " : " + "8" + ("=" * int(data[1]["total"]/data[1]["tries"])) + "D\n"
+        ret += "" + data[0] + " : " + "\n8" + ("=" * int(data[1]["total"]/data[1]["tries"])) + "D\n\n"
+        count =+ 1
+        if count == 10:
+            break
     return ret + "```"
