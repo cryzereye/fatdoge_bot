@@ -258,7 +258,7 @@ def pp(mentions):
         ret = ""
         for x in mentions:
             randNum = rand.randint(0, 20)
-            ret += "<@" + str(x.id) + ">'s pp: "  + ("8" + ("=" * randNum) + "D") + "\n\n"
+            ret += "<@" + str(x.id) + ">'s pp:\n"  + ("8" + ("=" * randNum) + "D") + "\n\n"
         return ret
     else:
         randNum = rand.randint(0, 20)
