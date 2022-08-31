@@ -290,9 +290,9 @@ def pplb():
     ret = "```** TOP 10 AVERAGE PP LENGTHS **\n\n"
     for data in sortedPP:
         ret += "" + data[0] + " : " + "\n8" + ("=" * int(data[1]["total"]/data[1]["tries"])) + "D\n\n"
-        count =+ 1
-        if count == 10:
-            break
+        count += 1
+        if count >= 10:
+            return ret + "```"
     return ret + "```"
 
 def jutslb():
@@ -301,7 +301,7 @@ def jutslb():
     ret = "```** TOP 10 JUTS LEADERBOARD **\n\n"
     for data in sortedPP:
         ret += "" + data[0] + " : " + "\n8" + ("=" * int(data[1]["total"]/data[1]["tries"])) + "D\n\n"
-        count =+ 1
-        if count == 10:
-            break
+        count += 1
+        if count >= 10:
+            return ret + "```"
     return ret + "```"
