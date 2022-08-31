@@ -31,10 +31,37 @@ with open("json\\mooncycle.json", "r") as moon_file:
     moonData = json.load(moon_file)
     moon_file.close()
 
-def angry(key, user):
-    util.logger(str(user) + " is angry!!!!")
+with open("json\\pp.json", "r") as pp_file:
+    ppData = json.load(pp_file)
+    pp_file.close() 
+
+def gwei(user, cfg):
+    s = "```"
+    for x in range(0, len(cfg)):
+        r = requests.get(
+        "https://api." + str(cfg[x]["name"]) + "scan."+ str(cfg[x]["suffix"]) +"/api?module=gastracker&action=gasoracle&apikey=" + str(cfg[x]["key"]))
+        if r.status_code == 200:
+            s += ("From "+ str(cfg[x]["name"]).capitalize() +"scan."+str(cfg[x]["suffix"])+":\n\n"
+            "Low :\t" + r.json()["result"]["SafeGasPrice"] + "\n"
+            "Ave :\t" + r.json()["result"]["ProposeGasPrice"] + "\n"
+            "High:\t" + r.json()["result"]["FastGasPrice"] + "\n\n\n")
+        else:
+            s += cfg[x]["name"] + "Gas prices not available"
+    return s + "```"
+
+def echo(user, channel):
+    util.logger(str(user) + " used echo")
+    print ("" + str(channel))
+    return ""
+
+def persy(user):
+    util.logger(str(user) + " used gspot")
+    return "pakyu " + user.mention + " wag kang bastos >:("
+
+def tenor(key, user, s):
+    util.logger(str(user) + " used tenor for " + s)
     r = requests.get(
-    "https://g.tenor.com/v1/random?q=angry&key=%s&limit=%s&locale=en_US&media_filter=minimal&contentfilter=medium" % (key, 1))
+    "https://g.tenor.com/v1/random?q=%s&key=%s&limit=%s&locale=en_US&media_filter=minimal&contentfilter=medium" % (s, key, 1))
 
     if r.status_code == 200:
         return r.json()["results"][0]["media"][0]["gif"]["url"]
@@ -45,12 +72,14 @@ def spot(pair, k, s, user):
     util.logger(str(user) + " used spot for " + pair)
     bin_client = Spot(key=k, secret=s)
     s = "```From Binance Spot:\n\n"
-    if str.lower(pair) == "all":
+    if str(pair) == "ALL":
         watchlist = [
             "BTCUSDT",
             "ETHUSDT",
             "LRCUSDT",
-            "ADAUSDT"
+            "ADAUSDT",
+            "LUNABUSD",
+            "IMXUSDT"
         ]
         
         for x in range(0, len(watchlist)):
@@ -123,7 +152,7 @@ def p2p(tradeType, payMethod, user):
     for x in r_data["data"]:
         payMethods = ""
         for y in r_data["data"][i]["adv"]["tradeMethods"]:
-            payMethods += str(y["payType"]) + " "
+            payMethods += str(y["identifier"]) + " "
 
         s += (
             "Binance P2P PHP/USDT:   " + str(r_data["data"][i]["adv"]["price"]) + "\n"
@@ -143,22 +172,30 @@ def p2p(tradeType, payMethod, user):
 def whenmoon(user):
     util.logger(str(user) + " used whenmoon")
     currentDate = datetime.today()
+    loopDate = currentDate
     fullMoonSTR = ""
     newMoonSTR = ""
 
     for x in moonData["fullmoons"]:
+        prevFullMoon = datetime.strftime(loopDate, '%B %d %Y')
         loopDate = datetime.strptime(x, '%d/%m/%Y')
         if currentDate < loopDate:
             fullMoonSTR = datetime.strftime(loopDate, '%B %d %Y')
             break
     
     for x in moonData["newmoons"]:
+        prevNewMoon = datetime.strftime(loopDate, '%B %d %Y')
         loopDate = datetime.strptime(x, '%d/%m/%Y')
         if currentDate < loopDate:
             newMoonSTR = datetime.strftime(loopDate, '%B %d %Y')
             break
-
-    return "```Next FULL moon:  " + fullMoonSTR + "\nNext NEW moon:   " + newMoonSTR + "```"
+    s = ("```" +
+    "\nPrev FULL moon:  " + prevFullMoon +
+    "\nNext FULL moon:  " + fullMoonSTR +
+    "\nPrev NEW moon:   " + prevNewMoon +
+    "\nNext NEW moon:   " + newMoonSTR +
+    "```")
+    return s
 
 # CoinGeckoAPI can only show rates against USD
 # had to make a workaround for token-token rates
@@ -189,156 +226,11 @@ def crypto(cg, args, user):
                         pass
                 s += ""+ coin1_ID + "/" + coin2_ID + "  " + coin1.upper() + "/" + coin2.upper() + " : " + str(result[coin1_ID]['usd']/result2[coin2_ID]['usd'])
 
-            s += "" + coin1_ID + "  " + coin1.upper() + "/USD : " + str(result[coin1_ID]['usd'])
+            else:
+                s += "" + coin1_ID + "  " + coin1.upper() + "/USD : " + str(result[coin1_ID]['usd'])
     except:
         return "```Input a valid token!```"
     return s + "```"
-
-
-# gacha game to monke bepis
-def bepisMonke(user):
-    result = ""
-    record = {}
-    num = rand.randint(0,1000)
-    appendRecord = False
-
-    try:
-        record = list(filter(lambda x:x["user"]==user,bepisLB))[0]
-        print(record)
-        if record == []:
-            raise ValueError
-    except:
-        print("New player " + user)
-        record = {
-            "user" : user,
-            "tries" : 0,
-            "wins" : 0
-        }
-        appendRecord = True
-
-    record["tries"] += 1
-    
-    util.logger(user + " rolled " + str(num) + " in bepisMonke")
-
-    if num < 69:
-        space = int(num/2) * " "
-        result =  "||" + space + "bepis monke" + space + "||"
-        record["wins"] += 1
-    elif num == 69:
-        result = "|| https://imgur.com/e54X8Pu ||" 
-        record["wins"] += 1
-
-    if appendRecord:
-        bepisLB.append(record)
-    with open("bepisLB.json", "w") as bepisLB_file:
-        json.dump(bepisLB, bepisLB_file)
-        bepisLB_file.close()
-
-    return result
-
-# gacha game for seggs
-def seggs(user):
-    result = ""
-    record = {}
-    num = rand.randint(0,1000)
-    appendRecord = False
-
-    try:
-        record = list(filter(lambda x:x["user"]==user,seggsLB))[0]
-        print(record)
-        if record == []:
-            raise ValueError
-    except:
-        print("New player " + user)
-        record = {
-            "user" : user,
-            "tries" : 0,
-            "wins" : 0
-        }
-        appendRecord = True
-
-    record["tries"] += 1
-
-    util.logger(str(user) + " rolled " + str(num) + " in seggs")
-
-    if num < 43:
-        record["wins"] += 1
-        result = "https://imgur.com/cZNc7Pl"
-
-    if appendRecord:
-        seggsLB.append(record)
-    with open("seggsLB.json", "w") as seggsLB_file:
-        json.dump(seggsLB, seggsLB_file)
-        seggsLB_file.close()
-
-    return result
-
-
-def winrate(user):
-    util.logger(str(user) + " queried winrate")
-    recordB = {}
-    recordS = {}
-    returnMsg = "```Winrates for " + user + "\n"
-    #try:
-    #    recordB = list(filter(lambda x:x["user"]==user,bepisLB))[0]
-    #    if recordB == []:
-    #        raise ValueError
-    #    winRateB = recordB["wins"]/recordB["tries"]* 100
-    #    winRateB_str = "{:.2f}".format(winRateB)
-    #    returnMsg = returnMsg + "bepis:   " + str(recordB["tries"]) + "/" + str(recordB["wins"]) + "(" + str(winRateB_str) + "%)\n"
-    #except:
-    #    returnMsg = returnMsg + "Haven't played bepis gacha\n"
-    try:
-        recordS = list(filter(lambda x:x["user"]==user,seggsLB))[0]
-        if recordS == []:
-            raise ValueError
-        winRateS = recordS["wins"]/recordS["tries"]* 100
-        winRateS_str = "{:.2f}".format(winRateS)
-        returnMsg = returnMsg + "seggs:   " + str(recordS["tries"]) + "/" + str(recordS["wins"]) + "(" + str(winRateS_str) + "%)\n"
-    except:
-        returnMsg = returnMsg + "Haven't played seggs gacha\n"
-
-    return returnMsg + "```"
-
-
-def leaderboard(user, msg):
-    record = []
-
-    try:
-        list = msg.split(" ")
-        game = list[1]
-        if game not in ("seggs", "seggs"):
-            raise ValueError
-    except:
-        util.logger(str(user) + " asked for LB of an invalid game: " + msg)
-        return "```Game not found!```"
-    util.logger(str(user) + " asked for LB of " + game)
-
-
-    returnMsg = "```LEADERBOARD FOR "+ game +"\n\nUser\t\t\t\t\t\t\t\t\t|  Winrate  |  Tries  |  Wins  |\n"
-    try:
-        #if game == "bepis":
-        #    record = sorted(bepisLB, key=lambda item: item["wins"]/item["tries"]*100, reverse=True)
-        if game == "seggs":
-            record = sorted(seggsLB, key=lambda item: item["wins"]/item["tries"]*100, reverse=True)
-            if record == []:
-                raise ValueError
-    except:
-        return "```No leaderboard for " + game + " game```"
-
-    ctr = 0
-    for x in record:
-        winrate = "{:05.2f}".format(x["wins"]/x["tries"]*100)
-        winrateStr = winrate + int(7 - len(winrate)) * " "
-        tries = str(x["tries"]) + int(7 - len(str(x["tries"]))) * " "
-        wins = str(x["wins"]) + int(6 - len(str(x["wins"]))) * " "
-        returnMsg = returnMsg + x["user"] + str(int(40 - len(x["user"])) * " ") + "|  " + winrateStr + "  |  " + tries + "|  " + wins + "|\n"
-        ctr+=1
-        if ctr == 5: break
-
-
-    returnMsg = returnMsg + "```"
-    return returnMsg
 
 def help(user):
     util.logger(str(user) + " queried help")
@@ -347,9 +239,10 @@ def help(user):
             "^spot [binance pairing ex: BTCUSDT]\n"
             "^fx\n"
             "^p2p [buy|sell [gcash|ubop|bank|ing|others...]]\n"
-            "^price coin1 [coin2: default is USD]\n\n"
+            "^price coin1 [coin2: default is USD]\n"
+            "^gwei\n\n"
             "only in #degeneral:\n"
-            "^gagofy"
+            "^gagofy\n"
             "\n\n"
             "required = ()\n"
             "optional = []\n"
@@ -362,3 +255,52 @@ def gagofy(user):
     length = len(gagofyData["statements"])
     randNum = rand.randint(0, length - 1)
     return gagofyData["statements"][randNum]
+
+def pp(user, mentions):
+    util.logger(str(user) + " queried plz pp")
+
+    randNum = rand.randint(0, 20)
+    savePPdata(user, randNum)
+    ret = "<@" + str(user.id) + ">'s pp:\n"  + ("8" + ("=" * randNum) + "D") + "\n\n"
+
+    for x in mentions:
+        randNum = rand.randint(0, 20)
+        savePPdata(x, randNum)
+        util.logger(str(user) + "queried plz pp for" + str(x))
+        ret += "<@" + str(x.id) + ">'s pp:\n"  + ("8" + ("=" * randNum) + "D") + "\n\n"
+
+    return ret
+
+def savePPdata(user, num):
+    util.logger(str(user) + " pp data saved")
+    if(str(user) in ppData):
+        ppData[str(user)]["total"] += num
+        ppData[str(user)]["tries"] += 1
+    else:
+        ppData[str(user)] = {
+            "total" : num,
+            "tries" : 1
+        }
+    util.saveJSONdata(ppData, "json/pp")
+
+def pplb():
+    count = 0
+    sortedPP = sorted(ppData.items(), key=lambda x: x[1]["total"]/x[1]["tries"], reverse=True)
+    ret = "```** TOP 10 AVERAGE PP LENGTHS **\n\n"
+    for data in sortedPP:
+        ret += "" + data[0] + " : " + "\n8" + ("=" * int(data[1]["total"]/data[1]["tries"])) + "D\n\n"
+        count += 1
+        if count >= 10:
+            return ret + "```"
+    return ret + "```"
+
+def jutslb():
+    count = 0
+    sortedPP = sorted(ppData.items(), key=lambda x: x[1]["total"]/x[1]["tries"], reverse=False)
+    ret = "```** TOP 10 JUTS LEADERBOARD **\n\n"
+    for data in sortedPP:
+        ret += "" + data[0] + " : " + "\n8" + ("=" * int(data[1]["total"]/data[1]["tries"])) + "D\n\n"
+        count += 1
+        if count >= 10:
+            return ret + "```"
+    return ret + "```"

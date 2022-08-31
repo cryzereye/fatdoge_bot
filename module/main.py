@@ -34,31 +34,32 @@ async def on_ready():
 @client.event
 async def on_message(message):
     msg = ""
-    if message.author == client.user:
+    if message.author == client.user: #filter out bot messages
         return
-
+    lowerMSG = message.content.lower()
+    # all channels
+    if message.content.startswith(command_prefix + 'help'):
+            msg = cc.help(str(message.author))
+              
     if message.channel.id in config["allowed_channels"]:
-        lowerMSG = message.content.lower()
         options = ""
-        if message.content.startswith(command_prefix + 'price'):
+        if message.content.lower().startswith(command_prefix + 'jutslb'):
+            await message.reply(cc.jutslb())
+        elif message.content.lower().startswith(command_prefix + 'pplb'):
+            await message.reply(cc.pplb())
+        elif(message.content.lower().startswith('plz pp')):
+            await message.reply(cc.pp(message.author, message.mentions))
+        elif message.content.startswith(command_prefix + 'price'):
             waitMsg = await message.channel.send("```Awaiting " + message.content + " response...```")
             msg = cc.crypto(cg , message.content, str(message.author))
             await waitMsg.edit(content = msg)
             return
         elif message.content.startswith(command_prefix +'spot'):
             try:
-                options = message.content.split(" ")[1]
+                options = str.upper(message.content.split(" ")[1])
             except:
-                options = "all"
+                options = "ALL"
             msg = cc.spot(options, config["bikey"], config["s"], str(message.author))
-        #elif message.content.startswith(command_prefix +'lb'): 
-        #    msg = cc.leaderboard(str(message.author), message.content)
-        #elif message.content.startswith(command_prefix +'winrate') or message.content.startswith(command_prefix +'wr'): 
-        #    msg = cc.winrate(str(message.author))
-        #elif str("bepis") in lowerMSG: 
-        #    msg = cc.bepisMonke(str(message.author))
-        #elif str("seggs") in lowerMSG: 
-        #    msg = cc.seggs(str(message.author))
         elif message.content.startswith(command_prefix +'whenmoon'):
             msg = cc.whenmoon(str(message.author))
         elif message.content.startswith(command_prefix +'p2p'):
@@ -81,14 +82,25 @@ async def on_message(message):
                     msg = cc.p2p('BUY',"", str(message.author))
         elif message.content.startswith(command_prefix +'fx'):
             msg = cc.fx(str(message.author))
+        elif message.content.startswith(command_prefix +'gspot'):
+            msg = cc.persy(message.author)
+        elif message.content.startswith(command_prefix +'echo'):
+            try:
+                msg = cc.echo(str(message.author), message.content.split(" ")[1])
+            except:
+                msg = cc.echo(str(message.author), "")
+        elif message.content.startswith(command_prefix +'gwei'):
+            msg = cc.gwei(str(message.author), config["gwei"])
 
-    
-    if message.content.startswith(command_prefix + 'gagofy') and message.channel.id == 806838914806710282:
-        msg = cc.gagofy(str(message.author))
-    elif message.content.startswith(command_prefix + 'help'):
-        msg = cc.help(str(message.author))
-    elif message.content.startswith(command_prefix +'angry'):
-        msg = cc.angry(config["tnrky"], str(message.author))
+    # for RMI degeneral only
+    if message.channel.id == 806838914806710282:
+        if message.content.startswith(command_prefix + 'gagofy'):
+            msg = cc.gagofy(str(message.author))
+        elif message.content.startswith(command_prefix +'tenor'):
+            try: 
+                msg = cc.tenor(config["tnrky"], str(message.author), message.content.split(" ")[1])
+            except:
+                msg = cc.tenor(config["tnrky"], str(message.author), "confused")
 
     if (msg != ""): await message.channel.send(msg)
 
