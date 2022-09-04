@@ -304,3 +304,9 @@ def jutslb():
         if count >= 10:
             return ret + "```"
     return ret + "```"
+
+def mypp(user):
+    if(not(str(user) in ppData)): return "no pp"
+    else:
+        ret = "```" + str(user) + "'s pp:\n\n8" + ("=" * int(ppData[str(user)]["total"]/ppData[str(user)]["tries"])) + "D"
+        return ret + "```"
