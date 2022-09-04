@@ -1,15 +1,38 @@
-name: fatdoge_ci
+name: fatdoge-ci
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  
 jobs:
-  sync_branches:
+  get-branches:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Prints all branches
+      uses: actions/checkout@v3
+    - run: git branch
+
+  merge-main:
+    needs: get-branches
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        branch: [gwei, classes, vouch, dashboard]
-    runs-on: ubuntu-latest
-    steps: 
-      - run:
-        git switch ${{matrix.branch}}
-        git pull
-        git push ${{matrix.branch}}
+        branch: [gwei, vouch, classes, dashboard, azure-pipelines]
+    steps:
+    - name: Prepare the Git credentials
+      uses: actions/checkout@v3
+    - run: |
+        git config --global user.name "GitHub Actions Bot"
+        git config --global user.email "<>"
+    - name: Switch to branch then rebase from main
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        ref: ${{ matrix.branch }}
+    - run: git fetch
+    - run: git merge -Xours origin/main
+    - run: git push origin ${{ matrix.branch }}
