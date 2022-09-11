@@ -1,0 +1,10 @@
+version: "3.3"
+services:   
+  gg_bot:
+    build:
+      context: ./
+    networks:
+      - gg_botnetwork
+
+networks:
+  gg_botnetwork:
