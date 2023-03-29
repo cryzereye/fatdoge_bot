@@ -1,14 +1,10 @@
-from genericpath import exists
-from http.client import ResponseNotReady
 import json, requests
 from pickle import TRUE
 import random as rand
 import utilities as util
 from datetime import datetime
-from binance.spot import Spot
 
 FIXERIOFXAPI_URL = "http://data.fixer.io/api/latest?access_key=419f3befde9b7e362bc748d9c767a966&symbols=USD,PHP,JPY,RUB,KRW&format=1"
-P2PAPI_URL = "https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search"
 
 # CoinGeckoAPI coins list
 coins = {}
@@ -68,30 +64,6 @@ def tenor(key, user, s):
     else:
         return None
 
-def spot(pair, k, s, user):
-    util.logger(str(user) + " used spot for " + pair)
-    bin_client = Spot(key=k, secret=s)
-    s = "```From Binance Spot:\n\n"
-    if str(pair) == "ALL":
-        watchlist = [
-            "BTCUSDT",
-            "ETHUSDT",
-            "LRCUSDT",
-            "ADAUSDT",
-            "LUNABUSD",
-            "IMXUSDT"
-        ]
-        
-        for x in range(0, len(watchlist)):
-            res = bin_client.ticker_price(watchlist[x])
-            s += "" + watchlist[x] + ":\t" + res["price"] + "\n"
-    else:
-        res = bin_client.ticker_price(pair)
-        s += "" + pair + ":\t" + res["price"] + "\n"
-
-    return s + "```"
-
-
 def fx(user):
     util.logger(str(user) + " used fx")
     response = requests.get(FIXERIOFXAPI_URL) 
@@ -103,68 +75,6 @@ def fx(user):
     "PHP/RUB:\t" + str(float(response.json()["rates"]["PHP"])/float(response.json()["rates"]["RUB"])) + "\n"
     "PHP/KRW:\t" + str(float(response.json()["rates"]["PHP"])/float(response.json()["rates"]["KRW"])) + "\n"
     "```")
-    return s
-
-# allows user to get notified when Binance P2P PHP/USDT rate crosses inputted rate
-# 5 secs refresh: to be implemented
-def p2pnotify(user, msg):
-    try:
-        list = msg.split(" ")
-        rate = float(list[2])
-        return "<@" + str(user) + "> will be notified once PHP/USDT P2P buy rate is below or equal to " + str(f'{rate:0.2f}')
-    except:
-        return "Invalid p2p notify command! Please check rate inputted!"
-    
-# returns 1 Binance P2P USDT/PHP result with the lowest buying rate
-def p2p(tradeType, payMethod, user):
-    util.logger(str(user) + " used p2p for " + tradeType)
-    data = {
-        "asset": "USDT",
-        "fiat": "PHP",
-        "merchantCheck": True,
-        "page": 1,
-        "publisherType": "merchant",
-        "rows": 5,
-        "tradeType": tradeType,
-    }
-
-    if payMethod != "":
-        data.update({"payTypes": [payMethod]})
-
-    try:
-        response = requests.post(P2PAPI_URL, json=data)
-        r_data = response.json()
-        if len(r_data["data"]) == 0:
-            raise Exception
-    except:
-        s = ("```Invalid p2p options entered!\n\n"
-            "p2p (buy|sell) (gcash|ing|bank|ubop)"
-            "```"
-        )
-        return s
-
-    s = "```Binance P2P PHP/USDT " +  tradeType
-    if payMethod != "":
-        s += " for pay method " + payMethod
-    s += "\n\n"
-
-    i = 0
-    for x in r_data["data"]:
-        payMethods = ""
-        for y in r_data["data"][i]["adv"]["tradeMethods"]:
-            payMethods += str(y["identifier"]) + " "
-
-        s += (
-            "Binance P2P PHP/USDT:   " + str(r_data["data"][i]["adv"]["price"]) + "\n"
-            "Available USDT:         " + str(r_data["data"][i]["adv"]["surplusAmount"]) + "\n"
-            "Merchant Name:          " + str(r_data["data"][i]["advertiser"]["nickName"]) + "\n"
-            "Payment methods:        " + payMethods + "\n"
-            "================================================\n\n"
-        )
-        i+=1
-
-    s += "```"
-
     return s
 
 # return next new moon and full moon dates
@@ -236,9 +146,7 @@ def help(user):
     util.logger(str(user) + " queried help")
     s = ("```AVAILABLE COMMANDS:\n"
             "only in #bot-spam and #crypto:\n"
-            "^spot [binance pairing ex: BTCUSDT]\n"
             "^fx\n"
-            "^p2p [buy|sell [gcash|ubop|bank|ing|others...]]\n"
             "^price coin1 [coin2: default is USD]\n"
             "^gwei\n\n"
             "only in #degeneral:\n"
