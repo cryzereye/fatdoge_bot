@@ -1,4 +1,4 @@
-FROM python:3.10.10-bullseye
+FROM python:3.8.16-bullseye
 WORKDIR /app
 COPY requirements.txt .
 RUN pip3 install --upgrade pip
