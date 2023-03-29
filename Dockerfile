@@ -1,4 +1,4 @@
-FROM python:3.9-slim-buster
+FROM python:3.10.10-windowsservercore-ltsc2022
 WORKDIR /app
 COPY requirements.txt .
 RUN pip3 install --no-cache-dir -r requirements.txt
