@@ -15,23 +15,23 @@ coins = {}
 while coins == {}:
     coins = requests.get("https://api.coingecko.com/api/v3/coins/list").json()
 
-with open("json\\bepisLB.json", "r") as bepisLB_file:
+with open("json/bepisLB.json", "r") as bepisLB_file:
     bepisLB = json.load(bepisLB_file)
     bepisLB_file.close()
 
-with open("json\\seggsLB.json", "r") as seggsLB_file:
+with open("json/seggsLB.json", "r") as seggsLB_file:
     seggsLB = json.load(seggsLB_file)
     seggsLB_file.close()
 
-with open("json\\gagofy.json", "r") as gagofy_file:
+with open("json/gagofy.json", "r") as gagofy_file:
     gagofyData = json.load(gagofy_file)
     gagofy_file.close()
 
-with open("json\\mooncycle.json", "r") as moon_file:
+with open("json/mooncycle.json", "r") as moon_file:
     moonData = json.load(moon_file)
     moon_file.close()
 
-with open("json\\pp.json", "r") as pp_file:
+with open("json/pp.json", "r") as pp_file:
     ppData = json.load(pp_file)
     pp_file.close() 
 
