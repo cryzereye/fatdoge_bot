@@ -20,7 +20,6 @@ config = util.loadConfig()
 command_prefix = config["command_prefix"]
 
 #general bot setup
-bot = commands.Bot(command_prefix)
 client = discord.Client(intents = intents)
 
 # server status
@@ -42,46 +41,21 @@ async def on_message(message):
             msg = cc.help(str(message.author))
               
     if message.channel.id in config["allowed_channels"]:
-        options = ""
-        if message.content.lower().startswith(command_prefix + 'mypp'):
+        if lowerMSG.startswith(command_prefix + 'mypp'):
             await message.reply(cc.mypp(message.author))
-        elif message.content.lower().startswith(command_prefix + 'jutslb'):
+        elif lowerMSG.startswith(command_prefix + 'jutslb'):
             await message.reply(cc.jutslb())
-        elif message.content.lower().startswith(command_prefix + 'pplb'):
+        elif lowerMSG.startswith(command_prefix + 'pplb'):
             await message.reply(cc.pplb())
-        elif(message.content.lower().startswith('plz pp')):
+        elif(lowerMSG.startswith('plz pp')):
             await message.reply(cc.pp(message.author, message.mentions))
         elif message.content.startswith(command_prefix + 'price'):
             waitMsg = await message.channel.send("```Awaiting " + message.content + " response...```")
             msg = cc.crypto(cg , message.content, str(message.author))
             await waitMsg.edit(content = msg)
             return
-        elif message.content.startswith(command_prefix +'spot'):
-            try:
-                options = str.upper(message.content.split(" ")[1])
-            except:
-                options = "ALL"
-            msg = cc.spot(options, config["bikey"], config["s"], str(message.author))
         elif message.content.startswith(command_prefix +'whenmoon'):
             msg = cc.whenmoon(str(message.author))
-        elif message.content.startswith(command_prefix +'p2p'):
-            if message.content.startswith(command_prefix +'p2p notify'):
-                msg = cc.p2pnotify(str(message.author.id), message.content)
-            elif message.content.startswith(command_prefix +'p2p buy'): # dirty fast workaround below
-                try:
-                    msg = cc.p2p('BUY', message.content.split(" ")[2], str(message.author))
-                except:
-                    msg = cc.p2p('BUY', "", str(message.author))
-            elif message.content.startswith(command_prefix +'p2p sell'):
-                try:
-                    msg = cc.p2p('SELL', message.content.split(" ")[2], str(message.author))
-                except:
-                    msg = cc.p2p('SELL', "", str(message.author))
-            else:
-                try:
-                    msg = cc.p2p('BUY', message.content.split(" ")[1], str(message.author))
-                except:
-                    msg = cc.p2p('BUY',"", str(message.author))
         elif message.content.startswith(command_prefix +'fx'):
             msg = cc.fx(str(message.author))
         elif message.content.startswith(command_prefix +'gspot'):
