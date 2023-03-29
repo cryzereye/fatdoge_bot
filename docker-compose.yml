@@ -1,0 +1,6 @@
+version: '1'
+services:
+  fatdoge-py:
+    build: .
+    ports:
+      - "5000:5000"
